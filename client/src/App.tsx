@@ -109,7 +109,7 @@ function Router() {
   
   // Check if we're on a website route or mining portal route
   useEffect(() => {
-    const publicRoutes = ['/', '/mining', '/token', '/login', '/token-ecosystem', '/mining-cafe', '/loading-example', '/meteor-example', '/video-animation', '/coin-demo', '/family-access', '/trial-signup', '/signup'];
+    const publicRoutes = ['/', '/cafe-entrance', '/cafe-visualization', '/visualization', '/mining', '/token', '/login', '/token-ecosystem', '/mining-cafe', '/loading-example', '/meteor-example', '/video-animation', '/coin-demo', '/family-access', '/trial-signup', '/signup'];
     // Add Tera routes to public routes
     const teraRoutes = ['/tera-token', '/tera-token/legacy', '/tera-token/legacy/detailed', '/tera-token/legacy/roots', '/tera-token/legacy/seeds', '/tera-token/story', '/tera-token/mission', '/tera-evidence'];
     const allPublicRoutes = [...publicRoutes, ...teraRoutes];
@@ -141,7 +141,23 @@ function Router() {
   if (showWebsite) {
     return (
       <Switch>
-        <Route path="/" component={WelcomePage} />
+        <Route path="/" component={() => {
+          // Import the component directly to avoid lazy loading issues
+          const CafeEntrancePage = require('@/pages/CafeEntrancePage').default;
+          return <CafeEntrancePage />;
+        }} />
+        <Route path="/cafe-entrance" component={() => {
+          const CafeEntrancePage = require('@/pages/CafeEntrancePage').default;
+          return <CafeEntrancePage />;
+        }} />
+        <Route path="/cafe-visualization" component={() => {
+          const CafeVisualizationPage = require('@/pages/CafeVisualizationPage').default;
+          return <CafeVisualizationPage />;
+        }} />
+        <Route path="/visualization" component={() => {
+          const VisualizationPage = require('@/pages/VisualizationPage').default;
+          return <VisualizationPage />;
+        }} />
         <Route path="/home" component={Home} />
         <Route path="/mining" component={MiningSubscription} />
         <Route path="/token" component={TokenInfo} />
