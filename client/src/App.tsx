@@ -47,15 +47,13 @@ import TokenInfo from "@/components/website/TokenInfo";
 import WebsiteLogin from "@/components/website/Login";
 import TrialSignup from "@/components/website/TrialSignup";
 import SignUp from "@/components/website/SignUp";
-import WelcomePage from "@/components/website/WelcomePage";
 import TokenEcosystem from "@/pages/TokenEcosystem";
 import MiningIntroduction from "@/components/ui/MiningIntroduction";
 import FamilyIntroduction from "@/components/ui/FamilyIntroduction";
 
-// Frontend animation pages
-import CafeEntrancePage from "@/pages/CafeEntrancePage";
-import CafeVisualizationPage from "@/pages/CafeVisualizationPage";
+// Import animation pages
 import VisualizationPage from "@/pages/VisualizationPage";
+import EntrancePage from "@/pages/EntrancePage";
 
 import BitcoinInvoice from "@/pages/BitcoinInvoice";
 
@@ -145,11 +143,9 @@ function Router() {
   if (showWebsite) {
     return (
       <Switch>
-        <Route path="/" component={CafeEntrancePage} />
-        <Route path="/cafe-entrance" component={CafeEntrancePage} />
-        <Route path="/cafe-visualization" component={CafeVisualizationPage} />
-        <Route path="/visualization" component={VisualizationPage} />
+        <Route path="/" component={EntrancePage} />
         <Route path="/home" component={Home} />
+        <Route path="/visualization" component={VisualizationPage} />
         <Route path="/mining" component={MiningSubscription} />
         <Route path="/token" component={TokenInfo} />
         <Route path="/token-ecosystem" component={TokenEcosystem} />
