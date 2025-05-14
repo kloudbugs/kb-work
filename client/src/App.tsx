@@ -47,13 +47,11 @@ import TokenInfo from "@/components/website/TokenInfo";
 import WebsiteLogin from "@/components/website/Login";
 import TrialSignup from "@/components/website/TrialSignup";
 import SignUp from "@/components/website/SignUp";
+import WelcomePage from "@/components/website/WelcomePage";
 import TokenEcosystem from "@/pages/TokenEcosystem";
+import WelcomeAnimation from "@/components/ui/WelcomeAnimation";
 import MiningIntroduction from "@/components/ui/MiningIntroduction";
 import FamilyIntroduction from "@/components/ui/FamilyIntroduction";
-
-// Import animation pages
-import VisualizationPage from "@/pages/VisualizationPage";
-import EntrancePage from "@/pages/EntrancePage";
 
 import BitcoinInvoice from "@/pages/BitcoinInvoice";
 
@@ -71,7 +69,7 @@ import AuthPage from "@/pages/auth-page";
 import { useAuth } from "@/contexts/AuthContext";
 import { MusicProvider } from "@/contexts/MusicContext";
 import GlobalMusicBar from "@/components/ui/GlobalMusicBar";
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState } from "react";
 
 function ProtectedRoute({ component: Component }: { component: React.ComponentType }) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -111,7 +109,7 @@ function Router() {
   
   // Check if we're on a website route or mining portal route
   useEffect(() => {
-    const publicRoutes = ['/', '/cafe-entrance', '/cafe-visualization', '/visualization', '/mining', '/token', '/login', '/token-ecosystem', '/mining-cafe', '/loading-example', '/meteor-example', '/video-animation', '/coin-demo', '/family-access', '/trial-signup', '/signup'];
+    const publicRoutes = ['/', '/mining', '/token', '/login', '/token-ecosystem', '/mining-cafe', '/loading-example', '/meteor-example', '/video-animation', '/coin-demo', '/family-access', '/trial-signup', '/signup'];
     // Add Tera routes to public routes
     const teraRoutes = ['/tera-token', '/tera-token/legacy', '/tera-token/legacy/detailed', '/tera-token/legacy/roots', '/tera-token/legacy/seeds', '/tera-token/story', '/tera-token/mission', '/tera-evidence'];
     const allPublicRoutes = [...publicRoutes, ...teraRoutes];
@@ -143,9 +141,8 @@ function Router() {
   if (showWebsite) {
     return (
       <Switch>
-        <Route path="/" component={EntrancePage} />
+        <Route path="/" component={WelcomePage} />
         <Route path="/home" component={Home} />
-        <Route path="/visualization" component={VisualizationPage} />
         <Route path="/mining" component={MiningSubscription} />
         <Route path="/token" component={TokenInfo} />
         <Route path="/token-ecosystem" component={TokenEcosystem} />
