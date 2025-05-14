@@ -327,18 +327,20 @@ app.post("/api/wallet/transfer", async (req: Request, res: Response) => {
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <a 
-                              href={getVerificationUrl(payout.txHash) || "#"}
-                              target="_blank" 
+                              href={getVerificationUrl(payout.txHash)}
+                              target="_blank"
                               rel="noopener noreferrer"
-                              className="text-blue-500 hover:text-blue-600 hover:underline flex items-center"
-                              onClick={() => setSelectedTxHash(payout.txHash)}
+                              className="text-primary hover:underline flex items-center"
                             >
-                              {shortenHash(payout.txHash, 8)}
+                              {shortenHash(payout.txHash)}
                               <ExternalLink className="h-3 w-3 ml-1" />
                             </a>
                           </TooltipTrigger>
                           <TooltipContent>
-                            <p>View transaction on Blockchair</p>
+                            <div className="max-w-xs">
+                              <p className="mb-1">View this transaction on the Bitcoin blockchain.</p>
+                              <p className="text-sm opacity-80">Transaction ID: {payout.txHash}</p> 
+                            </div>
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
@@ -348,38 +350,93 @@ app.post("/api/wallet/transfer", async (req: Request, res: Response) => {
                   </TableCell>
                   <TableCell className="font-mono text-xs">
                     {payout.sourceAddress ? (
-                      shortenHash(payout.sourceAddress, 6)
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <a 
+                              href={`https://blockchair.com/bitcoin/address/${payout.sourceAddress}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-primary hover:underline flex items-center"
+                            >
+                              {shortenHash(payout.sourceAddress)}
+                              <ExternalLink className="h-3 w-3 ml-1" />
+                            </a>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <div className="max-w-xs">
+                              <p className="mb-1">View source address on the Bitcoin blockchain.</p>
+                              <p className="text-sm opacity-80">Address: {payout.sourceAddress}</p> 
+                            </div>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     ) : (
-                      <span className="text-gray-500">Pool</span>
+                      <span className="text-gray-500">Mining Pool</span>
                     )}
                   </TableCell>
                   <TableCell>
-                    {payout.status === 'completed' && (
-                      <Badge variant="outline" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 border-green-200 dark:border-green-800">
-                        <Check className="h-3 w-3 mr-1" />
-                        Completed
+                    {payout.status === 'completed' ? (
+                      <Badge className="bg-green-100 text-green-800 dark:bg-green-700 dark:text-green-100 flex items-center gap-1">
+                        <Check className="h-3 w-3" /> Completed
                       </Badge>
-                    )}
-                    {payout.status === 'pending' && (
-                      <Badge variant="outline" className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300 border-yellow-200 dark:border-yellow-800">
-                        <RefreshCw className="h-3 w-3 mr-1 animate-spin" />
+                    ) : payout.status === 'pending' ? (
+                      <Badge variant="outline" className="bg-yellow-100 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-100">
                         Pending
                       </Badge>
-                    )}
-                    {payout.status === 'failed' && (
-                      <Badge variant="outline" className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300 border-red-200 dark:border-red-800">
+                    ) : (
+                      <Badge variant="destructive">
                         Failed
                       </Badge>
-                    )}
-                    {!['completed', 'pending', 'failed'].includes(payout.status) && (
-                      <Badge variant="outline">{payout.status}</Badge>
                     )}
                   </TableCell>
                   <TableCell>
                     {payout.status === 'pending' && payout.estimatedCompletionTime ? (
-                      formatDate(payout.estimatedCompletionTime)
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-gray-600 dark:text-gray-400">
+                          {formatDate(payout.estimatedCompletionTime)}
+                        </span>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="ml-2 h-6 px-2"
+                          onClick={() => completeTransaction(payout.id)}
+                          disabled={completingId === payout.id}
+                        >
+                          {completingId === payout.id ? (
+                            <RefreshCw className="h-3 w-3 animate-spin" />
+                          ) : (
+                            <RefreshCw className="h-3 w-3" />
+                          )}
+                        </Button>
+                      </div>
+                    ) : payout.status === 'completed' ? (
+                      <span className="text-xs text-green-600 dark:text-green-400">
+                        Completed
+                      </span>
+                    ) : payout.status === 'failed' ? (
+                      <span className="text-xs text-red-600 dark:text-red-400">
+                        N/A
+                      </span>
                     ) : (
-                      <span className="text-gray-500">-</span>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-gray-600 dark:text-gray-400">
+                          Est. ~30 min
+                        </span>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="ml-2 h-6 px-2"
+                          onClick={() => completeTransaction(payout.id)}
+                          disabled={completingId === payout.id}
+                        >
+                          {completingId === payout.id ? (
+                            <RefreshCw className="h-3 w-3 animate-spin" />
+                          ) : (
+                            <RefreshCw className="h-3 w-3" />
+                          )}
+                        </Button>
+                      </div>
                     )}
                   </TableCell>
                 </TableRow>
@@ -387,36 +444,124 @@ app.post("/api/wallet/transfer", async (req: Request, res: Response) => {
             </TableBody>
           </Table>
         )}
-        
-        {/* Developer Tools - Hidden in Production */}
-        {process.env.NODE_ENV !== 'production' && (
-          <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
-            <h4 className="text-sm font-medium mb-2">Developer Tools</h4>
-            <div className="flex flex-wrap gap-2">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={() => {
-                  // Find a pending transaction
-                  const pendingTx = payouts.find(p => p.status === 'pending');
-                  if (pendingTx) {
-                    completeTransaction(pendingTx.id);
-                  } else {
-                    toast({
-                      title: "No pending transactions",
-                      description: "There are no pending transactions to complete",
-                      variant: "destructive",
-                    });
-                  }
-                }}
-                disabled={completingId !== null || !payouts.some(p => p.status === 'pending')}
-              >
-                {completingId !== null ? 'Completing...' : 'Complete Pending Transaction'}
-              </Button>
-            </div>
-          </div>
-        )}
       </CardContent>
+
+      {/* Add Blockchair Debug dialog */}
+      <Dialog open={selectedTxHash !== null} onOpenChange={(open) => !open && setSelectedTxHash(null)}>
+        <DialogContent className="max-w-4xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Info className="h-5 w-5" />
+              Blockchair API Debug
+            </DialogTitle>
+            <DialogDescription>
+              Troubleshooting Bitcoin transaction verification using the Blockchair API
+            </DialogDescription>
+          </DialogHeader>
+
+          <Alert variant="destructive" className="mb-4">
+            <AlertTitle className="flex items-center gap-2">
+              Blockchair API Error
+            </AlertTitle>
+            <AlertDescription className="mt-2">
+              <p>There was an error retrieving blockchain data for transaction hash:</p>
+              <code className="mt-2 block bg-black/10 p-2 rounded font-mono text-sm">
+                {selectedTxHash}
+              </code>
+            </AlertDescription>
+          </Alert>
+
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">How to Manually Construct Bitcoin Transactions</h3>
+            
+            <div className="bg-gray-900 text-gray-100 p-4 rounded-md overflow-auto max-h-[400px] font-mono text-xs">
+              <pre>
+{`// Example of how to manually create a Bitcoin transaction using bitcoinjs-lib
+import * as bitcoin from 'bitcoinjs-lib';
+import { ECPairFactory } from 'ecpair';
+import * as ecc from 'tiny-secp256k1';
+
+// Create ECPair factory
+const ECPair = ECPairFactory(ecc);
+
+// Select Bitcoin network (mainnet)
+const network = bitcoin.networks.bitcoin;
+
+// 1. Create private key (NEVER hardcode in production - use secure storage)
+const privateKey = ECPair.makeRandom({ network });
+
+// 2. Get public key and address
+const { address } = bitcoin.payments.p2wpkh({
+  pubkey: privateKey.publicKey,
+  network,
+});
+
+// 3. Create a transaction
+const psbt = new bitcoin.Psbt({ network });
+
+// 4. Add inputs (requires fetching UTXOs from blockchain)
+psbt.addInput({
+  hash: 'previous_transaction_hash',
+  index: 0, // output index
+  witnessUtxo: {
+    script: bitcoin.address.toOutputScript(address, network),
+    value: 100000, // amount in satoshis
+  }
+});
+
+// 5. Add outputs
+psbt.addOutput({
+  address: 'recipient_address',
+  value: 90000, // amount in satoshis minus fee
+});
+
+// 6. Sign the transaction
+psbt.signInput(0, privateKey);
+psbt.finalizeAllInputs();
+
+// 7. Get transaction hex
+const txHex = psbt.extractTransaction().toHex();
+
+// 8. Broadcast transaction (using Blockchair API)
+// const response = await axios.post('https://api.blockchair.com/bitcoin/push/transaction', {
+//   data: txHex
+// });`}
+              </pre>
+            </div>
+
+            <Separator />
+            
+            <h3 className="text-lg font-medium">Blockchair API Alternatives</h3>
+            <p className="text-sm text-muted-foreground">
+              If the Blockchair API is unavailable, you can try these alternatives:
+            </p>
+            <ul className="list-disc pl-5 text-sm space-y-1">
+              <li>Blockchain.com API: <code>https://www.blockchain.com/api</code></li>
+              <li>BlockCypher API: <code>https://www.blockcypher.com/dev/bitcoin/</code></li>
+              <li>Bitcore: <code>https://bitcore.io/api/</code></li>
+              <li>Mempool Space API: <code>https://mempool.space/api/</code></li>
+            </ul>
+          </div>
+
+          <DialogFooter className="flex justify-between items-center">
+            <a
+              href={getBlockchairDebugUrl(selectedTxHash)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-blue-500 hover:underline flex items-center"
+            >
+              Try direct API request
+              <ExternalLink className="h-3 w-3 ml-1" />
+            </a>
+            
+            <Button onClick={() => setSelectedTxHash(null)}>
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }
+
+export default WithdrawalHistory;

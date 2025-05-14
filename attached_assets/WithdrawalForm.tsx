@@ -325,7 +325,7 @@ export function WithdrawalForm({ walletDetails, className }: WithdrawalFormProps
                 Payout Schedule
               </Label>
               <Select value={payoutSchedule} onValueChange={setPayoutSchedule}>
-                <SelectTrigger id="schedule" className="bg-gray-100 dark:bg-gray-700">
+                <SelectTrigger id="schedule" className="w-full bg-gray-100 dark:bg-gray-700">
                   <SelectValue placeholder="Select schedule" />
                 </SelectTrigger>
                 <SelectContent>
@@ -337,47 +337,40 @@ export function WithdrawalForm({ walletDetails, className }: WithdrawalFormProps
             </div>
             
             <Button 
-              variant="outline"
+              variant="outline" 
+              size="sm" 
               onClick={() => updateSettingsMutation.mutate()}
               disabled={updateSettingsMutation.isPending}
               className="w-full"
             >
-              {updateSettingsMutation.isPending ? 'Updating...' : 'Update Payout Settings'}
+              {updateSettingsMutation.isPending ? "Saving..." : "Save Settings"}
             </Button>
           </div>
         </div>
         
-        {/* Action Buttons */}
-        <div className="space-y-3">
+        {/* Withdrawal Button */}
+        <Button 
+          className="w-full"
+          onClick={handleWithdrawal}
+          disabled={transferMutation.isPending || availableForWithdrawal <= 0}
+        >
+          <ArrowRightLeft className="h-5 w-5 mr-2" />
+          {transferMutation.isPending ? "Processing..." : "Withdraw Now"}
+        </Button>
+        
+        {/* Real Withdrawal Button for Admin users */}
+        {isAdmin && (
           <Button 
-            onClick={handleWithdrawal}
-            disabled={transferMutation.isPending || availableForWithdrawal <= 0}
-            className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white"
+            className="w-full mt-4 bg-red-600 hover:bg-red-700"
+            onClick={handleRealWithdrawal}
           >
-            {transferMutation.isPending ? (
-              <div className="flex items-center space-x-2">
-                <div className="animate-spin h-4 w-4 border-2 border-white border-opacity-50 border-t-transparent rounded-full"></div>
-                <span>Processing...</span>
-              </div>
-            ) : (
-              <div className="flex items-center space-x-2">
-                <ArrowRightLeft className="h-4 w-4" />
-                <span>Withdraw Now</span>
-              </div>
-            )}
+            <AlertTriangle className="h-5 w-5 mr-2" />
+            Real Withdrawal
           </Button>
-          
-          {isAdmin && (
-            <Button 
-              variant="outline"
-              onClick={handleRealWithdrawal}
-              className="w-full"
-            >
-              Open Real Withdrawal Page
-            </Button>
-          )}
-        </div>
+        )}
       </CardContent>
     </Card>
   );
 }
+
+export default WithdrawalForm;
