@@ -1,0 +1,21 @@
+/* Hide any mouse instruction or notification elements */
+.mouse-notification,
+.mouse-info,
+.info-box,
+.tutorial-box,
+.mouse-tutorial,
+div[class*="mouse-"],
+div[id*="mouse-"],
+div[class*="info-box"],
+div[id*="info-box"] {
+  display: none !important;
+}
+
+/* Ensure the bottom menu sits at the very bottom */
+.bottom-menu {
+  z-index: 9999;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
