@@ -68,8 +68,8 @@ const OrbitingItem: React.FC<{
       <mesh>
         <sphereGeometry args={[0.3, 32, 32]} />
         <meshStandardMaterial 
-          color={idx => ['#FF5733', '#33FF57', '#3357FF'][idx % 3]} 
-          emissive={idx => ['#FF5733', '#33FF57', '#3357FF'][idx % 3]}
+          color="#FF5733" 
+          emissive="#FF5733"
           emissiveIntensity={0.5}
         />
       </mesh>

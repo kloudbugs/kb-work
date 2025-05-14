@@ -49,9 +49,13 @@ import TrialSignup from "@/components/website/TrialSignup";
 import SignUp from "@/components/website/SignUp";
 import WelcomePage from "@/components/website/WelcomePage";
 import TokenEcosystem from "@/pages/TokenEcosystem";
-import WelcomeAnimation from "@/components/ui/WelcomeAnimation";
 import MiningIntroduction from "@/components/ui/MiningIntroduction";
 import FamilyIntroduction from "@/components/ui/FamilyIntroduction";
+
+// Frontend animation pages
+import CafeEntrancePage from "@/pages/CafeEntrancePage";
+import CafeVisualizationPage from "@/pages/CafeVisualizationPage";
+import VisualizationPage from "@/pages/VisualizationPage";
 
 import BitcoinInvoice from "@/pages/BitcoinInvoice";
 
@@ -69,7 +73,7 @@ import AuthPage from "@/pages/auth-page";
 import { useAuth } from "@/contexts/AuthContext";
 import { MusicProvider } from "@/contexts/MusicContext";
 import GlobalMusicBar from "@/components/ui/GlobalMusicBar";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 
 function ProtectedRoute({ component: Component }: { component: React.ComponentType }) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -141,23 +145,10 @@ function Router() {
   if (showWebsite) {
     return (
       <Switch>
-        <Route path="/" component={() => {
-          // Import the component directly to avoid lazy loading issues
-          const CafeEntrancePage = require('@/pages/CafeEntrancePage').default;
-          return <CafeEntrancePage />;
-        }} />
-        <Route path="/cafe-entrance" component={() => {
-          const CafeEntrancePage = require('@/pages/CafeEntrancePage').default;
-          return <CafeEntrancePage />;
-        }} />
-        <Route path="/cafe-visualization" component={() => {
-          const CafeVisualizationPage = require('@/pages/CafeVisualizationPage').default;
-          return <CafeVisualizationPage />;
-        }} />
-        <Route path="/visualization" component={() => {
-          const VisualizationPage = require('@/pages/VisualizationPage').default;
-          return <VisualizationPage />;
-        }} />
+        <Route path="/" component={CafeEntrancePage} />
+        <Route path="/cafe-entrance" component={CafeEntrancePage} />
+        <Route path="/cafe-visualization" component={CafeVisualizationPage} />
+        <Route path="/visualization" component={VisualizationPage} />
         <Route path="/home" component={Home} />
         <Route path="/mining" component={MiningSubscription} />
         <Route path="/token" component={TokenInfo} />
