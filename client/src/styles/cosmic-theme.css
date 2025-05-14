@@ -1,0 +1,272 @@
+/* ************************************************************************ 
+   COSMIC THEME CSS FOR KLOUDBUGS MINING PLATFORM
+   ************************************************************************ */
+
+/* Base styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: #000;
+  color: #fff;
+  overflow: hidden;
+}
+
+/* Background effects */
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  animation: zoom 10s infinite;
+  opacity: 0.3;
+  z-index: -1;
+}
+
+@keyframes zoom {
+  0% {
+    opacity: 0.2;
+    background-position: 0% 0%;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.2;
+    background-position: 100% 100%;
+  }
+}
+
+/* Text effects */
+.cosmic-gradient {
+  background: linear-gradient(90deg, #8A2BE2, #FF00FF, #00BFFF);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 800;
+  text-shadow: 0 0 5px rgba(138, 43, 226, 0.7);
+}
+
+/* Welcome page styles */
+.welcome-page, .home-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  overflow: auto;
+}
+
+.welcome-container, .home-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  border: 1px solid rgba(138, 43, 226, 0.3);
+  box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
+  backdrop-filter: blur(10px);
+  text-align: center;
+  z-index: 10;
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+.welcome-title {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-subtitle {
+  font-size: 1.5rem;
+  color: #00BFFF;
+  margin-bottom: 2rem;
+  font-weight: 300;
+}
+
+.welcome-description {
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.welcome-mission {
+  margin: 2rem 0;
+  padding: 20px;
+  border-top: 1px solid rgba(138, 43, 226, 0.3);
+  border-bottom: 1px solid rgba(138, 43, 226, 0.3);
+}
+
+.welcome-mission h2 {
+  font-size: 2rem;
+  margin: 0.5rem 0;
+}
+
+.welcome-mission .quote {
+  font-style: italic;
+  color: #ccc;
+}
+
+/* Home page specific styles */
+.home-header {
+  margin-bottom: 2rem;
+}
+
+.home-header h1 {
+  font-size: 2.5rem;
+  margin: 0;
+}
+
+.header-subtitle {
+  color: #00BFFF;
+  font-size: 1.2rem;
+}
+
+.section {
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.section h2 {
+  color: #8A2BE2;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(138, 43, 226, 0.3);
+  padding-bottom: 0.5rem;
+}
+
+.guardian-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.guardian-card {
+  background-color: rgba(20, 20, 40, 0.5);
+  border: 1px solid rgba(138, 43, 226, 0.3);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.guardian-card h3 {
+  margin-top: 0;
+  color: #00BFFF;
+}
+
+/* Button styles */
+.welcome-buttons, .home-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.welcome-button, .home-button {
+  padding: 12px 24px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(138, 43, 226, 0.7);
+  border-radius: 4px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.welcome-button.primary, .home-button.primary {
+  background-color: rgba(138, 43, 226, 0.3);
+  border: 1px solid rgba(138, 43, 226, 1);
+  box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+}
+
+.welcome-button:hover, .home-button:hover {
+  box-shadow: 0 0 15px rgba(138, 43, 226, 0.7);
+  transform: translateY(-2px);
+}
+
+/* Frontend badge */
+.frontend-badge {
+  margin-top: 2rem;
+  padding: 6px 12px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 4px;
+  border: 1px solid #8A2BE2;
+  display: inline-block;
+  color: #8A2BE2;
+  font-size: 12px;
+  font-family: monospace;
+}
+
+/* Visualization page */
+.visualization-page {
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Cafe entrance button with special effects */
+.cafe-entrance-button {
+  padding: 16px 32px;
+  background: linear-gradient(45deg, rgba(138, 43, 226, 0.6), rgba(255, 0, 255, 0.6));
+  border: 2px solid rgba(138, 43, 226, 1);
+  border-radius: 8px;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(138, 43, 226, 0.7);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.cafe-entrance-button:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 0 30px rgba(138, 43, 226, 0.9);
+}
+
+.cafe-entrance-button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
+}
+
+.cafe-entrance-button:hover:before {
+  left: 100%;
+}
+
+/* Pulsing animation for the button */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(138, 43, 226, 0.9), 0 0 40px rgba(255, 0, 255, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.7);
+  }
+}
+
+.cafe-entrance-button {
+  animation: pulse 2s infinite;
+}
