@@ -167,7 +167,7 @@ const BitcoinVoiceEffect: React.FC<BitcoinVoiceEffectProps> = ({ onComplete }) =
   const [isPlaying, setIsPlaying] = useState(false);
   const [tendrilsActive, setTendrilsActive] = useState(false);
   const [showStarNotification, setShowStarNotification] = useState(false);
-  const bitcoinPosition = [0, 0, 0]; // Center position for the bitcoin
+  const bitcoinPosition: [number, number, number] = [0, 0, 0]; // Center position for the bitcoin
   const tendrilsRef = useRef<THREE.Group>(null);
   
   // Function to trigger effect visuals when voice is playing

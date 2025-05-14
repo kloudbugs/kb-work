@@ -1,41 +1,8 @@
-import React, { Suspense, useState, useEffect } from 'react';
+import React, { Suspense, useRef } from 'react';
 import { Link } from 'wouter';
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Stars } from '@react-three/drei';
 import * as THREE from 'three';
-
-// Create OrbitingLogo component inline since we don't have direct access to the original
-const OrbitingLogo: React.FC<{ radius?: number, speed?: number }> = ({ 
-  radius = 3,
-  speed = 0.3
-}) => {
-  // Use React Three Fiber to create the orbing effect
-  return (
-    <group>
-      <mesh position={[0, 0, 0]}>
-        <sphereGeometry args={[0.9, 64, 64]} />
-        <meshStandardMaterial 
-          color="#ffcc00" 
-          metalness={0.9}
-          roughness={0.1}
-          emissive="#ff9900"
-          emissiveIntensity={0.7}
-        />
-      </mesh>
-
-      {/* Create orbiting elements */}
-      {[0, 1, 2].map((idx) => (
-        <OrbitingItem 
-          key={idx} 
-          radius={radius} 
-          speed={speed} 
-          offset={idx * Math.PI * 0.67}
-          height={idx * 0.1 - 0.1} 
-        />
-      ))}
-    </group>
-  );
-};
 
 // OrbitingItem for the logo
 const OrbitingItem: React.FC<{ 
@@ -44,9 +11,8 @@ const OrbitingItem: React.FC<{
   offset: number;
   height: number;
 }> = ({ radius, speed, offset, height }) => {
-  const ref = React.useRef<THREE.Group>(null);
+  const ref = useRef<THREE.Group>(null);
   
-  // Animation using useFrame from react-three-fiber
   useFrame(({ clock }) => {
     if (ref.current) {
       const t = clock.getElapsedTime() * speed + offset;
@@ -77,9 +43,41 @@ const OrbitingItem: React.FC<{
   );
 };
 
+// Create OrbitingLogo component for the center of the visualization
+const OrbitingLogo: React.FC<{ radius?: number, speed?: number }> = ({ 
+  radius = 3,
+  speed = 0.3
+}) => {
+  return (
+    <group>
+      <mesh position={[0, 0, 0]}>
+        <sphereGeometry args={[0.9, 64, 64]} />
+        <meshStandardMaterial 
+          color="#ffcc00" 
+          metalness={0.9}
+          roughness={0.1}
+          emissive="#ff9900"
+          emissiveIntensity={0.7}
+        />
+      </mesh>
+
+      {/* Create orbiting elements */}
+      {[0, 1, 2].map((idx) => (
+        <OrbitingItem 
+          key={idx} 
+          radius={radius} 
+          speed={speed} 
+          offset={idx * Math.PI * 0.67}
+          height={idx * 0.1 - 0.1} 
+        />
+      ))}
+    </group>
+  );
+};
+
 // Helper component for Electric Tendrils effect
 const ElectricTendrils: React.FC<{ count?: number }> = ({ count = 20 }) => {
-  const groupRef = React.useRef<THREE.Group>(null);
+  const groupRef = useRef<THREE.Group>(null);
   
   useFrame(({ clock }) => {
     if (groupRef.current) {
@@ -127,45 +125,43 @@ const ElectricTendrils: React.FC<{ count?: number }> = ({ count = 20 }) => {
   );
 };
 
-// useFrame hook from @react-three/fiber imported directly
-import { useFrame as reactThreeUseFrame } from '@react-three/fiber';
-
-// Create a wrapper for useFrame to maintain the same API
-function useFrame(callback: (state: { clock: THREE.Clock }) => void) {
-  const clock = React.useRef(new THREE.Clock()).current;
-  
-  reactThreeUseFrame((state) => {
-    callback({ clock });
-  });
-}
+// Main component that renders the 3D visualization scene
+const Scene: React.FC = () => {
+  return (
+    <>
+      <ambientLight intensity={0.2} />
+      <pointLight position={[10, 10, 10]} intensity={0.8} />
+      <pointLight position={[-10, -10, -10]} intensity={0.5} color="#ff00ff" />
+      
+      {/* Cosmic Background */}
+      <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+      
+      {/* Main OrbitingLogo Component */}
+      <OrbitingLogo radius={3} speed={0.3} />
+      
+      {/* Electric Tendrils Effect */}
+      <ElectricTendrils count={30} />
+      
+      {/* Camera Controls */}
+      <OrbitControls 
+        enableZoom={true}
+        enablePan={true}
+        enableRotate={true}
+        minDistance={4}
+        maxDistance={20}
+        zoomSpeed={0.5}
+      />
+    </>
+  );
+};
 
 const VisualizationPage: React.FC = () => {
   return (
-    <div style={{ height: '100vh', width: '100vw', position: 'relative', overflow: 'hidden', background: 'black' }}>
+    <div className="visualization-page">
       {/* Return to Home link */}
-      <div style={{ 
-        position: 'absolute', 
-        top: '20px', 
-        left: '20px', 
-        zIndex: 1000,
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        borderRadius: '4px',
-        padding: '6px 12px',
-        border: '1px solid #8A2BE2',
-      }}>
+      <div className="back-link">
         <Link href="/">
-          <button style={{ 
-            color: '#8A2BE2', 
-            textDecoration: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            fontSize: '14px',
-            fontFamily: 'monospace',
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            padding: 0
-          }}>
+          <button className="back-button">
             ← Back to Home
           </button>
         </Link>
@@ -174,46 +170,12 @@ const VisualizationPage: React.FC = () => {
       {/* The main visualization interface using Three.js */}
       <Canvas camera={{ position: [0, 0, 8], fov: 60 }}>
         <Suspense fallback={null}>
-          <ambientLight intensity={0.2} />
-          <pointLight position={[10, 10, 10]} intensity={0.8} />
-          <pointLight position={[-10, -10, -10]} intensity={0.5} color="#ff00ff" />
-          
-          {/* Cosmic Background */}
-          <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-          
-          {/* Main OrbitingLogo Component */}
-          <OrbitingLogo radius={3} speed={0.3} />
-          
-          {/* Electric Tendrils Effect */}
-          <ElectricTendrils count={30} />
-          
-          {/* Camera Controls */}
-          <OrbitControls 
-            enableZoom={true}
-            enablePan={true}
-            enableRotate={true}
-            minDistance={4}
-            maxDistance={20}
-            zoomSpeed={0.5}
-          />
+          <Scene />
         </Suspense>
       </Canvas>
       
       {/* Information overlay */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '20px',
-          left: '20px',
-          backgroundColor: 'rgba(0, 0, 0, 0.7)',
-          padding: '10px 15px',
-          borderRadius: '4px',
-          color: 'white',
-          fontSize: '14px',
-          zIndex: 1000,
-          border: '1px solid #8A2BE2',
-        }}
-      >
+      <div className="info-overlay">
         <p>Cosmic Mining Platform Visualization</p>
         <p>Drag to rotate • Scroll to zoom</p>
       </div>
