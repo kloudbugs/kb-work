@@ -127,19 +127,16 @@ const ElectricTendrils: React.FC<{ count?: number }> = ({ count = 20 }) => {
   );
 };
 
-// Helper function for useFrame hook
+// useFrame hook from @react-three/fiber imported directly
+import { useFrame as reactThreeUseFrame } from '@react-three/fiber';
+
+// Create a wrapper for useFrame to maintain the same API
 function useFrame(callback: (state: { clock: THREE.Clock }) => void) {
-  const [clock] = React.useState(() => new THREE.Clock());
+  const clock = React.useRef(new THREE.Clock()).current;
   
-  React.useEffect(() => {
-    const animate = () => {
-      callback({ clock });
-      frameId = requestAnimationFrame(animate);
-    };
-    
-    let frameId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frameId);
-  }, [callback, clock]);
+  reactThreeUseFrame((state) => {
+    callback({ clock });
+  });
 }
 
 const VisualizationPage: React.FC = () => {
