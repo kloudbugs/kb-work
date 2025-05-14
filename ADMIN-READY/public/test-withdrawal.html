@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Withdrawal Interface</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #2a4b8d;
+            border-bottom: 2px solid #2a4b8d;
+            padding-bottom: 10px;
+        }
+        .card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #2a4b8d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #1a366d;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f0f8ff;
+            border-left: 4px solid #2a4b8d;
+            overflow-wrap: break-word;
+        }
+        .success {
+            border-left-color: #28a745;
+            background-color: #f0fff4;
+        }
+        .error {
+            border-left-color: #dc3545;
+            background-color: #fff0f0;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            background-color: #e9e9e9;
+            cursor: pointer;
+            border-radius: 4px 4px 0 0;
+            border: 1px solid #ddd;
+            border-bottom: none;
+        }
+        .tab.active {
+            background-color: white;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .transaction-history {
+            margin-top: 20px;
+        }
+        .transaction {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .transaction-header {
+            font-weight: bold;
+            background-color: #f3f3f3;
+            padding: 10px;
+        }
+        code {
+            background-color: #f1f1f1;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bitcoin Withdrawal Testing Interface</h1>
+    
+    <div class="tabs">
+        <div class="tab active" data-tab="test-withdrawal">Test Withdrawal</div>
+        <div class="tab" data-tab="transaction-history">Transaction History</div>
+        <div class="tab" data-tab="docs">Documentation</div>
+    </div>
+    
+    <div class="tab-content active" id="test-withdrawal">
+        <div class="card">
+            <h2>Test Withdrawal Request</h2>
+            <div class="form-group">
+                <label for="destinationAddress">Destination Address:</label>
+                <input type="text" id="destinationAddress" value="bc1qfavnkrku005m4kdkvdtgthur4ha06us2lppdps" placeholder="Enter Bitcoin address">
+            </div>
+            <div class="form-group">
+                <label for="amount">Amount (in satoshis):</label>
+                <input type="number" id="amount" value="5000" min="1000" placeholder="Enter amount in satoshis">
+            </div>
+            <div class="form-group">
+                <label for="transferType">Transfer Type:</label>
+                <select id="transferType">
+                    <option value="mining_reward">Mining Reward</option>
+                    <option value="token_liquidity">Token Liquidity</option>
+                    <option value="nft_purchase">NFT Purchase (Unsupported)</option>
+                </select>
+            </div>
+            <button id="submitBtn">Submit Withdrawal Request</button>
+            <div id="result" class="result" style="display: none;"></div>
+        </div>
+    </div>
+    
+    <div class="tab-content" id="transaction-history">
+        <div class="card">
+            <h2>Recent Transactions</h2>
+            <div id="transactions">
+                <div class="transaction-header">Loading transactions...</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="tab-content" id="docs">
+        <div class="card">
+            <h2>API Documentation</h2>
+            <h3>Endpoint</h3>
+            <p><code>POST /api/direct-transfers/test-withdrawal</code></p>
+            
+            <h3>Request Parameters</h3>
+            <ul>
+                <li><strong>destinationAddress</strong> (string, required): The Bitcoin address where funds will be sent</li>
+                <li><strong>amount</strong> (number, required): Amount in satoshis to withdraw</li>
+                <li><strong>transferType</strong> (string, required): Type of transfer. Supported values:
+                    <ul>
+                        <li><code>mining_reward</code>: Simulates mining reward distribution</li>
+                        <li><code>token_liquidity</code>: Simulates token liquidity transaction</li>
+                    </ul>
+                </li>
+            </ul>
+            
+            <h3>Response Format</h3>
+            <pre>
+{
+  "success": boolean,
+  "message": string,
+  "transactionId": string,
+  "transferType": string,
+  "estimatedCompletionTime": string (ISO date),
+  "details": {
+    "sourceAddress": string,
+    "destinationAddress": string,
+    "transferType": string,
+    "success": boolean,
+    "message": string,
+    "txHash": string,
+    "estimatedCompletionTime": string (ISO date)
+  }
+}
+            </pre>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Hide all tab content
+                    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                    // Show content for the active tab
+                    document.getElementById(this.dataset.tab).classList.add('active');
+                    
+                    // If transaction history tab is selected, fetch transactions
+                    if (this.dataset.tab === 'transaction-history') {
+                        fetchTransactions();
+                    }
+                });
+            });
+            
+            // Form submission
+            document.getElementById('submitBtn').addEventListener('click', async function() {
+                const destinationAddress = document.getElementById('destinationAddress').value;
+                const amount = parseInt(document.getElementById('amount').value);
+                const transferType = document.getElementById('transferType').value;
+                
+                // Basic validation
+                if (!destinationAddress) {
+                    showResult('Please enter a destination address', false);
+                    return;
+                }
+                
+                if (isNaN(amount) || amount <= 0) {
+                    showResult('Please enter a valid amount', false);
+                    return;
+                }
+                
+                // Disable button during request
+                this.disabled = true;
+                this.textContent = 'Processing...';
+                
+                try {
+                    const response = await fetch('/api/direct-transfers/test-withdrawal', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            destinationAddress,
+                            amount,
+                            transferType
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    showResult(JSON.stringify(data, null, 2), data.success);
+                } catch (error) {
+                    showResult(`Error: ${error.message}`, false);
+                } finally {
+                    // Re-enable button
+                    this.disabled = false;
+                    this.textContent = 'Submit Withdrawal Request';
+                }
+            });
+            
+            // Show result function
+            function showResult(message, success) {
+                const resultElement = document.getElementById('result');
+                resultElement.textContent = message;
+                resultElement.style.display = 'block';
+                
+                // Reset classes
+                resultElement.classList.remove('success', 'error');
+                
+                // Add appropriate class
+                if (success === true) {
+                    resultElement.classList.add('success');
+                } else if (success === false) {
+                    resultElement.classList.add('error');
+                }
+            }
+            
+            // Fetch transactions function
+            async function fetchTransactions() {
+                try {
+                    const response = await fetch('/api/payouts');
+                    const transactions = await response.json();
+                    
+                    const transactionsElement = document.getElementById('transactions');
+                    
+                    if (transactions.length === 0) {
+                        transactionsElement.innerHTML = '<div class="transaction">No transactions found</div>';
+                        return;
+                    }
+                    
+                    // Create table header
+                    let html = `
+                        <div class="transaction-header">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px;">
+                                <div>Type</div>
+                                <div>Amount</div>
+                                <div>Status</div>
+                                <div>Date</div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Add transactions
+                    transactions.forEach(tx => {
+                        const date = new Date(tx.timestamp).toLocaleString();
+                        html += `
+                            <div class="transaction">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px;">
+                                    <div>${tx.transferType || 'Unknown'}</div>
+                                    <div>${tx.amount} satoshis</div>
+                                    <div>${tx.status}</div>
+                                    <div>${date}</div>
+                                </div>
+                                <div style="margin-top: 5px; font-size: 0.9em;">
+                                    Tx: ${tx.txHash || 'N/A'}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    transactionsElement.innerHTML = html;
+                } catch (error) {
+                    const transactionsElement = document.getElementById('transactions');
+                    transactionsElement.innerHTML = `<div class="transaction error">Error loading transactions: ${error.message}</div>`;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

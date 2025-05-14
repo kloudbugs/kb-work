@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="deviceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+    <linearGradient id="metalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#64748B" />
+      <stop offset="50%" stop-color="#94A3B8" />
+      <stop offset="100%" stop-color="#64748B" />
+    </linearGradient>
+    <filter id="deviceGlow">
+      <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- ASIC Miner Case -->
+  <rect x="20" y="25" width="60" height="45" rx="2" fill="url(#metalGradient)" stroke="#475569" stroke-width="1" />
+  
+  <!-- Front Panel -->
+  <rect x="25" y="30" width="50" height="35" rx="1" fill="#1E293B" stroke="#475569" stroke-width="0.5" />
+  
+  <!-- Status LEDs -->
+  <circle cx="30" cy="35" r="1.5" fill="#22C55E">
+    <animate attributeName="fill" values="#22C55E;#15803D;#22C55E" dur="1.5s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="30" cy="40" r="1.5" fill="#F59E0B">
+    <animate attributeName="fill" values="#F59E0B;#B45309;#F59E0B" dur="2s" repeatCount="indefinite" />
+  </circle>
+  
+  <!-- Cooling Vents -->
+  <g fill="none" stroke="#475569" stroke-width="0.5">
+    <line x1="40" y1="35" x2="70" y2="35" />
+    <line x1="40" y1="38" x2="70" y2="38" />
+    <line x1="40" y1="41" x2="70" y2="41" />
+    <line x1="40" y1="44" x2="70" y2="44" />
+    <line x1="40" y1="47" x2="70" y2="47" />
+    <line x1="40" y1="50" x2="70" y2="50" />
+    <line x1="40" y1="53" x2="70" y2="53" />
+    <line x1="40" y1="56" x2="70" y2="56" />
+    <line x1="40" y1="59" x2="70" y2="59" />
+  </g>
+  
+  <!-- Bottom Stand -->
+  <rect x="25" y="70" width="50" height="5" rx="1" fill="url(#metalGradient)" stroke="#475569" stroke-width="0.5" />
+  
+  <!-- Power Cable -->
+  <path d="M20,55 C15,55 10,60 10,65 L10,75" fill="none" stroke="#1E293B" stroke-width="2" />
+  
+  <!-- Network Cable -->
+  <path d="M80,40 C85,40 90,45 90,50 L90,75" fill="none" stroke="#3B82F6" stroke-width="2" />
+  
+  <!-- Glowing Circuit Elements -->
+  <g filter="url(#deviceGlow)">
+    <rect x="30" cy="35" width="3" height="3" rx="1" fill="url(#deviceGradient)" />
+    <rect x="30" cy="45" width="3" height="3" rx="1" fill="url(#deviceGradient)" />
+    <rect x="30" cy="55" width="3" height="3" rx="1" fill="url(#deviceGradient)" />
+  </g>
+  
+  <!-- Hash Processing Animation -->
+  <g opacity="0.7">
+    <rect x="42" y="38" width="2" height="2" fill="#3B82F6">
+      <animate attributeName="opacity" values="1;0.3;1" dur="0.7s" repeatCount="indefinite" />
+    </rect>
+    <rect x="52" y="43" width="2" height="2" fill="#8B5CF6">
+      <animate attributeName="opacity" values="1;0.3;1" dur="0.9s" repeatCount="indefinite" />
+    </rect>
+    <rect x="62" y="48" width="2" height="2" fill="#3B82F6">
+      <animate attributeName="opacity" values="1;0.3;1" dur="1.1s" repeatCount="indefinite" />
+    </rect>
+    <rect x="57" y="53" width="2" height="2" fill="#8B5CF6">
+      <animate attributeName="opacity" values="1;0.3;1" dur="0.8s" repeatCount="indefinite" />
+    </rect>
+    <rect x="47" y="58" width="2" height="2" fill="#3B82F6">
+      <animate attributeName="opacity" values="1;0.3;1" dur="1s" repeatCount="indefinite" />
+    </rect>
+  </g>
+</svg>

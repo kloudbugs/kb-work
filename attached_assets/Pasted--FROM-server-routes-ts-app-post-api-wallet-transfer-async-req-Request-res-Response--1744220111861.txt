@@ -1,0 +1,91 @@
+// FROM server/routes.ts
+app.post("/api/wallet/transfer", async (req: Request, res: Response) => {
+  try {
+    if (!req.session?.userId) {
+      console.log('POST /api/wallet/transfer: Not authenticated');
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+    
+    console.log(`POST /api/wallet/transfer: Processing request for user ID ${req.session.userId}`);
+    
+    const { amount, useLedger } = req.body;
+    console.log(`POST /api/wallet/transfer: Requested amount: ${amount}, useLedger: ${useLedger}`);
+    
+    // Ensure amount is a number - Convert from BTC to satoshis if needed
+    let numericAmount: number;
+    if (typeof amount === 'string' && amount.includes('.')) {
+      // Looks like BTC format (e.g., "0.0005") - convert to satoshis
+      numericAmount = Math.floor(parseFloat(amount) * 100000000);
+      console.log(`POST /api/wallet/transfer: Converted BTC amount ${amount} to ${numericAmount} satoshis`);
+    } else {
+      // Assume it's already in satoshis
+      numericAmount = parseInt(amount);
+      console.log(`POST /api/wallet/transfer: Parsed amount as ${numericAmount} satoshis`);
+    }
+    
+    if (isNaN(numericAmount) || numericAmount <= 0) {
+      console.log(`POST /api/wallet/transfer: Invalid amount ${numericAmount}`);
+      return res.status(400).json({ message: "Amount must be a positive number" });
+    }
+    
+    // Get user details to ensure we have the right wallet address
+    const user = await storage.getUser(req.session.userId);
+    if (!user) {
+      console.log(`POST /api/wallet/transfer: User not found for ID ${req.session.userId}`);
+      return res.status(404).json({ 
+        success: false,
+        message: "User not found" 
+      });
+    }
+    
+    // Import the real withdrawal service for actual Bitcoin transactions
+    const { processWithdrawal } = await import('./lib/realWithdrawalService');
+    
+    // Process a withdrawal via Bitcoin network, with optional Ledger support
+    const result = await processWithdrawal(
+      req.session.userId,
+      numericAmount,
+      user.walletAddress,
+      !!useLedger // Convert to boolean
+    );
+    
+    if (result.success) {
+      console.log(`POST /api/wallet/transfer: Real Bitcoin withdrawal request successful`);
+      
+      // Verify the payout was saved by checking the database
+      const payouts = await storage.getPayouts(req.session.userId);
+      
+      const responseData = {
+        success: true,
+        message: "Real Bitcoin withdrawal initiated successfully",
+        txid: result.txHash,
+        amount: numericAmount,
+        sourceAddress: result.sourceAddress || "bc1qn3ny92uk8pkrvdz3hp7bc6up62xa5ee98fqfcl", // Pool address
+        destinationAddress: user.walletAddress, // User wallet address
+        walletAddress: user.walletAddress, // For compatibility with existing code
+        estimatedCompletionTime: result.estimatedCompletionTime?.toISOString(),
+        verificationUrl: result.txHash ? `https://blockchair.com/bitcoin/transaction/${result.txHash}` : undefined,
+        network: 'bitcoin',
+        blockchainInfo: {
+          network: 'bitcoin',
+          confirmationsRequired: 1, // Reduced confirmations for faster transactions
+          expectedTimePerBlock: '10 minutes'
+        }
+      };
+      
+      return res.status(200).json(responseData);
+    } else {
+      console.log(`POST /api/wallet/transfer: Bitcoin withdrawal failed: ${result.message}`);
+      return res.status(400).json({ 
+        success: false,
+        message: result.message || "Bitcoin withdrawal failed. Please check your balance and try again."
+      });
+    }
+  } catch (error) {
+    console.error('Error processing payout:', error);
+    return res.status(500).json({ 
+      success: false,
+      message: error instanceof Error ? error.message : "An unexpected error occurred"
+    });
+  }
+});

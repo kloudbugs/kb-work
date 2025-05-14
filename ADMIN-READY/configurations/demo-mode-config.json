@@ -1,0 +1,94 @@
+{
+  "demoMode": {
+    "enabled": true,
+    "credentials": {
+      "username": "admin",
+      "password": "admin123"
+    },
+    "restrictions": {
+      "maxSessions": 3,
+      "sessionTimeoutMinutes": 60,
+      "maxRequestsPerMinute": 100,
+      "restrictedOperations": [
+        "wallet_operations",
+        "payment_processing",
+        "security_override",
+        "user_deletion",
+        "system_configuration"
+      ]
+    },
+    "demoFeatures": {
+      "simulatedMining": true,
+      "preloadedData": true,
+      "aiSystemDemo": true,
+      "tokenomicsVisualizer": true,
+      "dashboardAccess": true,
+      "userManagementPreview": true,
+      "miningVisualization": true
+    },
+    "simulatedStats": {
+      "hashRate": 175000000000,
+      "activeMiners": 248,
+      "tokensDistributed": 18750,
+      "totalRewards": 3.75,
+      "uptime": 99.97,
+      "networkGrowth": 8.5,
+      "userEngagement": 78.4
+    },
+    "notifications": {
+      "demoModeActive": true,
+      "restrictedOperationWarning": true,
+      "sessionTimeoutWarning": true,
+      "dataNotPersisted": true
+    },
+    "branding": {
+      "showDemoWatermark": true,
+      "customDemoMessage": "KLOUD BUGS MINING COMMAND CENTER - DEMO VERSION"
+    }
+  },
+  "demoUserInterface": {
+    "theme": "cosmic",
+    "showAllFeatures": true,
+    "highlightPremiumFeatures": true,
+    "tutorialMode": false,
+    "animatedTransitions": true
+  },
+  "demoDataSets": {
+    "users": {
+      "count": 250,
+      "activityPatterns": "realistic",
+      "transactionVolume": "medium"
+    },
+    "mining": {
+      "simulateFluctuations": true,
+      "showHistoricalData": true,
+      "deviceTypes": [
+        "antminer_s19",
+        "antminer_s19j_pro",
+        "whatsminer_m30s",
+        "avalon_a1246" 
+      ]
+    },
+    "tokens": {
+      "circulatingSupply": 1000000,
+      "distributionVisualization": true,
+      "priceSimulation": true,
+      "stakingRewards": true
+    },
+    "socialImpact": {
+      "showImpactMetrics": true,
+      "justiceInitiatives": [
+        "Legal Defense Fund",
+        "Prison Reform Advocacy",
+        "Rehabilitation Programs",
+        "Education Initiatives",
+        "Family Support Systems"
+      ]
+    }
+  },
+  "securityNotice": {
+    "demoDisclaimer": "This demo version provides a realistic preview of the KLOUD BUGS MINING COMMAND CENTER with simulated data. No real transactions or mining operations are performed. All sensitive operations are disabled.",
+    "dataHandling": "No real user data or sensitive information is used in this demo mode. All displayed information is simulated for demonstration purposes only.",
+    "privacyNote": "Demo mode activity may be logged for product improvement purposes. No personally identifiable information is collected."
+  }
+}

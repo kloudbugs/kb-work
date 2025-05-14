@@ -1,0 +1,10 @@
+TRIBUTE SONG PLACEHOLDER
+
+This text file is a placeholder for the actual MP3 file.
+
+To complete the setup:
+1. Download a royalty-free version of "Amazing Grace (Instrumental)" or another appropriate memorial song.
+2. Rename the file to "tribute_song.mp3" and place it in this directory.
+3. Delete this placeholder.txt file afterward.
+
+The music player is looking for a file named "tribute_song.mp3" in this directory.

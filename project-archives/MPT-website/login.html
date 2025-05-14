@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mining Portal Login - KloudBugs</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0a0e1a;
+      color: #e2e8f0;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    .gradient-text {
+      background: linear-gradient(to right, #3CBCFC, #8BEDFF);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .btn-primary {
+      background: linear-gradient(to right, #3CBCFC, #54D1FF);
+      color: #0a0e1a;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+    .form-input {
+      background-color: #1e293b;
+      border: 1px solid #334155;
+      color: #e2e8f0;
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: #3CBCFC;
+      box-shadow: 0 0 0 2px rgba(60, 188, 252, 0.2);
+    }
+    .logo-container {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto;
+      border-radius: 999px;
+      background-color: rgba(60, 188, 252, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .glow {
+      filter: drop-shadow(0 0 10px rgba(60, 188, 252, 0.4));
+    }
+  </style>
+</head>
+<body>
+  <div class="min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="w-full max-w-md">
+      <div class="mb-8 text-center">
+        <div class="logo-container mb-6">
+          <img src="logo.png" alt="KloudBugs Logo" class="w-full h-auto glow">
+        </div>
+        <h1 class="text-3xl font-bold mb-2">
+          <span class="gradient-text">Mining Portal Access</span>
+        </h1>
+        <p class="text-gray-400">Enter your credentials to access the mining platform</p>
+      </div>
+      
+      <div class="bg-gray-800/50 rounded-xl border border-gray-700 p-8 shadow-xl">
+        <div id="error-message" class="hidden bg-red-900/50 text-red-200 p-3 rounded-md mb-4"></div>
+        
+        <form id="login-form">
+          <div class="mb-4">
+            <label for="username" class="block text-gray-300 mb-2 font-medium">Username</label>
+            <input 
+              type="text" 
+              id="username" 
+              name="username" 
+              class="form-input" 
+              required
+              autocomplete="username"
+            >
+          </div>
+          
+          <div class="mb-6">
+            <label for="password" class="block text-gray-300 mb-2 font-medium">Password</label>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              class="form-input" 
+              required
+              autocomplete="current-password"
+            >
+          </div>
+          
+          <button 
+            type="submit" 
+            id="login-button"
+            class="btn-primary w-full flex justify-center items-center"
+          >
+            Access Mining Platform
+          </button>
+        </form>
+        
+        <div class="mt-4 text-center text-sm text-gray-400">
+          Need access? <a href="/#subscribe" class="text-blue-400 hover:text-blue-300">Purchase a subscription</a> to receive your login details.
+        </div>
+      </div>
+      
+      <div class="mt-8 text-center">
+        <a href="/" class="text-blue-500 hover:text-blue-400 text-sm">
+          ← Back to KloudBugs Homepage
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginForm = document.getElementById('login-form');
+      const errorMessage = document.getElementById('error-message');
+      const loginButton = document.getElementById('login-button');
+      const originalButtonText = loginButton.innerHTML;
+      
+      loginForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Show loading state
+        loginButton.disabled = true;
+        loginButton.innerHTML = `
+          <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Logging in...
+        `;
+        
+        // Hide any previous error
+        errorMessage.classList.add('hidden');
+        
+        try {
+          const formData = new FormData(loginForm);
+          const response = await fetch('/mining-login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              username: formData.get('username'),
+              password: formData.get('password')
+            })
+          });
+          
+          const data = await response.json();
+          
+          if (data.success) {
+            // Redirect to mining platform
+            window.location.href = data.redirect;
+          } else {
+            // Show error message
+            errorMessage.textContent = data.message || 'Invalid username or password';
+            errorMessage.classList.remove('hidden');
+            
+            // Reset button state
+            loginButton.disabled = false;
+            loginButton.innerHTML = originalButtonText;
+          }
+        } catch (error) {
+          errorMessage.textContent = 'An error occurred. Please try again.';
+          errorMessage.classList.remove('hidden');
+          
+          // Reset button state
+          loginButton.disabled = false;
+          loginButton.innerHTML = originalButtonText;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
