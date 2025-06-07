@@ -1,69 +1,13 @@
 /**
- * KLOUD BUGS Mining Command Center - GUARDIAN VERSION
+ * KLOUD BUGS Mining Command Center - ADMIN VERSION
  * Validation Middleware
  * 
- * This middleware provides input validation for sensitive operations
- * in the GUARDIAN environment, particularly for wallet transactions.
+ * This middleware provides input validation for operations in the ADMIN environment.
+ * Note that wallet transaction validation is NOT included in this environment.
  */
 
 import { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
-
-/**
- * Validate wallet transaction requests
- */
-export const validateTransaction = (req: Request, res: Response, next: NextFunction) => {
-  const transactionSchema = z.object({
-    destinationAddress: z.string()
-      .min(26, 'Bitcoin address must be at least 26 characters')
-      .max(64, 'Bitcoin address cannot exceed 64 characters'),
-    amount: z.number()
-      .positive('Amount must be greater than 0')
-      .max(21000000, 'Amount cannot exceed total supply of Bitcoin'),
-    fee: z.number().positive('Fee must be greater than 0').optional(),
-    memo: z.string().max(250, 'Memo cannot exceed 250 characters').optional(),
-  });
-  
-  try {
-    transactionSchema.parse(req.body);
-    next();
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return res.status(400).json({ 
-        message: 'Invalid transaction parameters',
-        errors: error.errors.map(e => ({ field: e.path.join('.'), message: e.message }))
-      });
-    }
-    res.status(400).json({ message: 'Invalid transaction parameters' });
-  }
-};
-
-/**
- * Validate wallet private key operations
- */
-export const validateKeyOperation = (req: Request, res: Response, next: NextFunction) => {
-  const keyOpSchema = z.object({
-    purpose: z.enum(['sign', 'verify', 'export', 'backup'], {
-      errorMap: () => ({ message: 'Invalid operation purpose' }),
-    }),
-    signature: z.string().optional(),
-    message: z.string().optional(),
-    backupPassphrase: z.string().min(12, 'Backup passphrase must be at least 12 characters').optional(),
-  });
-  
-  try {
-    keyOpSchema.parse(req.body);
-    next();
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return res.status(400).json({ 
-        message: 'Invalid key operation parameters',
-        errors: error.errors.map(e => ({ field: e.path.join('.'), message: e.message }))
-      });
-    }
-    res.status(400).json({ message: 'Invalid key operation parameters' });
-  }
-};
 
 /**
  * Validate mining pool configuration
@@ -103,7 +47,6 @@ export const validatePermissionsChange = (req: Request, res: Response, next: Nex
       errorMap: () => ({ message: 'Invalid user role' }),
     }),
     restrictions: z.array(z.string()).optional(),
-    allowWalletAccess: z.boolean().optional(),
     allowSystemConfig: z.boolean().optional(),
     allowUserManagement: z.boolean().optional(),
   });
@@ -150,33 +93,63 @@ export const validateSecurityConfig = (req: Request, res: Response, next: NextFu
 };
 
 /**
- * Validate withdrawal requests
+ * Validate user creation/update
  */
-export const validateWithdrawal = (req: Request, res: Response, next: NextFunction) => {
-  const withdrawalSchema = z.object({
-    destinationAddress: z.string()
-      .min(26, 'Bitcoin address must be at least 26 characters')
-      .max(64, 'Bitcoin address cannot exceed 64 characters'),
-    amount: z.number()
-      .positive('Amount must be greater than 0'),
-    fee: z.enum(['low', 'medium', 'high', 'custom'], {
-      errorMap: () => ({ message: 'Invalid fee option' }),
-    }),
-    customFeeRate: z.number().positive().optional(),
-    memo: z.string().max(250, 'Memo cannot exceed 250 characters').optional(),
-    totpCode: z.string().length(6, 'TOTP code must be 6 digits').optional(),
+export const validateUserData = (req: Request, res: Response, next: NextFunction) => {
+  const userSchema = z.object({
+    username: z.string().min(3, 'Username must be at least 3 characters'),
+    email: z.string().email('Invalid email address'),
+    password: z.string().min(8, 'Password must be at least 8 characters').optional(),
+    role: z.enum(['ADMIN', 'USER', 'GUEST'], {
+      errorMap: () => ({ message: 'Invalid user role' }),
+    }).optional(),
+    firstName: z.string().optional(),
+    lastName: z.string().optional(),
+    phoneNumber: z.string().optional(),
+    socialMediaLink: z.string().optional(),
+    agreedToTerms: z.boolean().optional(),
   });
   
   try {
-    withdrawalSchema.parse(req.body);
+    userSchema.parse(req.body);
     next();
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ 
-        message: 'Invalid withdrawal parameters',
+        message: 'Invalid user data',
         errors: error.errors.map(e => ({ field: e.path.join('.'), message: e.message }))
       });
     }
-    res.status(400).json({ message: 'Invalid withdrawal parameters' });
+    res.status(400).json({ message: 'Invalid user data' });
+  }
+};
+
+/**
+ * Validate mining settings
+ */
+export const validateMiningSettings = (req: Request, res: Response, next: NextFunction) => {
+  const miningSettingsSchema = z.object({
+    userId: z.string(),
+    hashrate: z.number().optional(),
+    deviceType: z.string().optional(),
+    poolId: z.string().or(z.number()).optional(),
+    powerMode: z.enum(['low', 'medium', 'high', 'turbo'], {
+      errorMap: () => ({ message: 'Invalid power mode' }),
+    }).optional(),
+    isActive: z.boolean().optional(),
+    autoAdjust: z.boolean().optional(),
+  });
+  
+  try {
+    miningSettingsSchema.parse(req.body);
+    next();
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ 
+        message: 'Invalid mining settings',
+        errors: error.errors.map(e => ({ field: e.path.join('.'), message: e.message }))
+      });
+    }
+    res.status(400).json({ message: 'Invalid mining settings' });
   }
 };

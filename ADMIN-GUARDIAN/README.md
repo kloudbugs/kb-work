@@ -1,52 +1,66 @@
-# KLOUD BUGS Mining Command Center - GUARDIAN VERSION
+# KLOUD BUGS Mining Command Center - ADMIN-READY (Demo Admin Preview)
 
-This is the GUARDIAN version of the KLOUD BUGS Mining Command Center platform. This version is designed for owner use only and includes full wallet transaction capabilities and access to sensitive system components.
+This is the ADMIN-READY version of the KLOUD BUGS Mining Command Center platform. This version is for demonstration and preview purposes only. It contains simulated data and does not allow real admin, wallet, or payment operations.
 
-## Full Feature Set
+**ADMIN-READY is a demo/preview environment for admin features. For real admin and wallet operations, use ADMIN-GUARDIAN.**
 
-- Complete administrative dashboard access
-- User management with full security controls
+## Features
+
+- Full administrative dashboard access
+- User management
 - Mining statistics and monitoring
 - Token analytics and reports
-- System status monitoring and control
+- System status monitoring
 - Community and social impact tracking
-- AI system monitoring and training
-- Wallet transaction functionality
-- Security key rotation capabilities
-- Audit and access logs
-- Secure wallet configuration and initialization
+- AI system monitoring (without training capabilities)
+- Demo mode for presentations
 
-## Sensitive Components
+## Security Restrictions
 
-This version contains sensitive components that should never be shared:
+For security reasons, this version does not include:
 
-1. Wallet private keys and seed phrases
-2. Transaction signing capabilities
-3. Blockchain node connection details
+1. Wallet transaction functionality (transfer, sign, broadcast)
+2. Secure wallet configuration and initialization
+3. Access to private keys or sensitive wallet data
 4. Security key rotation capabilities
-5. Access to full audit logs
-6. AI training data and model access
+5. Audit and access log viewing
+6. AI model training (only monitoring)
+
+These features are only available in the GUARDIAN version, which is intended for owner use only.
 
 ## Usage
 
-To start the GUARDIAN version:
+To start the ADMIN version:
 
 ```bash
-bash run-guardian.sh
+bash run-admin.sh
 ```
 
-## Security Warning
+To start the ADMIN version in demo mode (for presentations):
 
-**EXTREMELY IMPORTANT**: This GUARDIAN version should never be shared with anyone else. Even trusted administrators should only receive the ADMIN-READY version, which has the sensitive wallet components removed.
+```bash
+bash run-admin.sh --demo
+```
 
-For collaborators who need administrative access, use the ADMIN-READY version located in the corresponding folder.
+## Login Credentials
 
-## Environment Separation
+Default admin login:
+- Username: admin
+- Password: admin123
 
-The three-tier platform design includes:
+## Demo Mode
 
-1. **GUARDIAN** (this version): Full owner access with wallet functionality
-2. **ADMIN-READY**: Administrator access without wallet capabilities
-3. **PUBLIC-DEPLOYMENT**: End-user facing interface
+When running in demo mode, the system will:
 
-Each version is completely self-contained and can run independently.
+1. Use simulated data for mining statistics
+2. Show demo users and accounts
+3. Simulate mining activity
+4. Allow demonstration of features without affecting real data
+
+Note that wallet operations are completely disabled in both regular and demo modes of this ADMIN version.
+
+## Transferring to New Environments
+
+This ADMIN version is designed to be self-contained and can be safely transferred to approved administrative collaborators. The folder contains everything needed to run independently.
+
+**IMPORTANT**: Do not share the GUARDIAN version with anyone, as it contains sensitive wallet information.
