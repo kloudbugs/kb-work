@@ -301,7 +301,7 @@ export default function AdminDashboard({ section = 'main' }: AdminDashboardProps
   
   // State for wallet data
   const [personalWalletData, setPersonalWalletData] = useState({
-    address: 'bc1qg9xemo98e0ecnh3g8quk9ysxztj8t3mpvwa78f',
+    address: '',
     balance: 0.00823742,
     balanceUSD: 204.95,
     canWithdrawToCustomAddress: true
@@ -385,7 +385,7 @@ export default function AdminDashboard({ section = 'main' }: AdminDashboardProps
       .then(data => {
         if (data) {
           setPersonalWalletData({
-            address: data.address || 'bc1qg9xemo98e0ecnh3g8quk9ysxztj8t3mpvwa78f',
+            address: data.address || '',
             balance: data.balance || 0,
             balanceUSD: data.balanceUSD || 0,
             canWithdrawToCustomAddress: data.canWithdrawToCustomAddress || true

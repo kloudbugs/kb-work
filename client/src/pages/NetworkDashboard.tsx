@@ -923,7 +923,6 @@ export default function NetworkDashboard() {
                       <div>
                         <label className="text-sm text-emerald-300 block mb-2">Your Wallet Address</label>
                         <div className="bg-gray-900/70 border border-emerald-900/50 rounded-md p-3 flex items-center justify-between">
-                          <p className="text-white font-mono text-sm truncate">bc1qg9xemo98e0ecnh3g8quk9ysxztj8t3mpvwa78f</p>
                           <Button size="sm" variant="ghost" className="ml-2 h-8 px-2 text-xs bg-emerald-900/20 hover:bg-emerald-900/40 text-emerald-300 border border-emerald-900/40">
                             <Check className="h-3 w-3 mr-1" /> Verified
                           </Button>

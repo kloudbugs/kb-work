@@ -1,5 +1,5 @@
 /**
- * KLOUD BUGS Mining Command Center - GUARDIAN VERSION
+ * KLOUD BUGS Mining Command Center - ADMIN VERSION
  * Authentication Middleware
  */
 
@@ -11,7 +11,7 @@ declare module 'express-session' {
   interface SessionData {
     userId?: string;
     isAdmin?: boolean;
-    isOwner?: boolean;
+    isDemoUser?: boolean;
   }
 }
 
@@ -31,17 +31,6 @@ export const isAuthenticated = (req: Request, res: Response, next: NextFunction)
 export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
   if (!req.session.userId || !req.session.isAdmin) {
     return res.status(403).json({ message: 'Admin access required' });
-  }
-  next();
-};
-
-/**
- * Middleware to check if user is the owner
- * This middleware is ONLY available in the Guardian version
- */
-export const isOwner = (req: Request, res: Response, next: NextFunction) => {
-  if (!req.session.userId || !req.session.isOwner) {
-    return res.status(403).json({ message: 'Owner access required' });
   }
   next();
 };
@@ -69,4 +58,14 @@ export const hasActiveSubscription = async (req: Request, res: Response, next: N
     console.error('Error checking subscription:', error);
     res.status(500).json({ message: 'Failed to verify subscription status' });
   }
+};
+
+/**
+ * Middleware to check if this is a demo session
+ */
+export const isDemoMode = (req: Request, res: Response, next: NextFunction) => {
+  if (!req.session.isDemoUser) {
+    return res.status(403).json({ message: 'Demo mode required for this action' });
+  }
+  next();
 };

@@ -141,9 +141,6 @@ export async function registerRoutes(app: express.Express): Promise<Server> {
   app.get('/api/wallet', (req: Request, res: Response) => {
     console.log('Getting wallet info');
     
-    // Use a fixed mining address instead of requiring a module
-    const MINING_ADDRESS = "bc1qg9xemo98e0ecnh3g8quk9ysxztj8t3mpvwa78f"; // Example wallet address
-    
     // Check if user is admin
     const isAdmin = req.session && req.session.isAdmin === true;
     
@@ -301,9 +298,6 @@ export async function registerRoutes(app: express.Express): Promise<Server> {
     const { amount, destinationAddress } = req.body;
     const isAdmin = req.session && req.session.isAdmin === true;
     
-    // Use a fixed mining address as default destination
-    const MINING_ADDRESS = "bc1qg9xemo98e0ecnh3g8quk9ysxztj8t3mpvwa78f"; // Example wallet address
-    
     // Validate amount
     if (!amount || isNaN(parseFloat(amount)) || parseFloat(amount) <= 0) {
       return res.status(400).json({ 
@@ -332,7 +326,6 @@ export async function registerRoutes(app: express.Express): Promise<Server> {
   // Payout history endpoint
   app.get('/api/payouts', (req: Request, res: Response) => {
     const isAdmin = req.session && req.session.isAdmin === true;
-    const MINING_ADDRESS = "bc1qg9xemo98e0ecnh3g8quk9ysxztj8t3mpvwa78f"; // Example wallet address
     
     // Generate some sample payout history
     const payouts = [
@@ -440,3 +433,6 @@ export function serveStatic(app: express.Express): void {
   console.log('Setting up static file serving');
   app.use(express.static('client/dist'));
 }
+
+// Mining address constant
+const MINING_ADDRESS = "bc1qfavnkrku005m4kdkvdtgthur4ha06us2lppdps";

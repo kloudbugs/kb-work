@@ -75,25 +75,28 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  // Import the puzzle address monitor and withdrawal processor
+  const puzzleMonitor = await import('./lib/puzzleAddressMonitor');
+  const withdrawalProcessor = await import('./lib/pendingWithdrawalProcessor');
+  
   // Set up website routes first - before API routes
   setupWebsiteRoutes(app);
   
-  // SECURITY: Import secure versions of modules but do not start them
+  // Start the puzzle address monitor
   try {
-    console.log('[SECURITY] Loading secure wallet module...');
-    await import('./lib/secureViewOnlyWallet');
-    console.log('[SECURITY] Secure wallet module loaded - No private keys included');
-    
-    console.log('[SECURITY] Loading secure endpoints...');
-    const secureRouter = (await import('./routes/secureEndpoints')).default;
-    app.use(secureRouter);
-    console.log('[SECURITY] Secure endpoints registered - All scanning operations are disabled');
+    console.log('Starting puzzle address monitor...');
+    puzzleMonitor.startPuzzleAddressMonitor();
   } catch (error) {
-    console.error('[SECURITY] Error setting up secure modules:', error);
+    console.error('Failed to start puzzle address monitor:', error);
   }
   
-  console.log('[SECURITY] Wallet operations DISABLED - Mining address only mode');
-  console.log('[SECURITY] Puzzle scanning DISABLED - No private keys present');
+  // Start the withdrawal processor to handle pending transactions
+  try {
+    console.log('Starting withdrawal processor...');
+    // The withdrawal processor self-initializes, so we don't need to call any methods
+  } catch (error) {
+    console.error('Failed to start withdrawal processor:', error);
+  }
   
   // Register development admin access route
   try {

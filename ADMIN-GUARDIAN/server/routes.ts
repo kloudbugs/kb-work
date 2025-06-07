@@ -1,12 +1,9 @@
 /**
- * KLOUD BUGS Mining Command Center - Guardian Version
+ * KLOUD BUGS Mining Command Center - Admin Version
  * API Routes
  * 
- * This file contains all API routes for the owner version with full access
- * including secure wallet system and transaction processing.
- * 
- * SECURITY NOTICE: This file contains sensitive wallet routes and should
- * never be exposed in public deployments.
+ * This file contains all API routes for the admin version.
+ * It does NOT include wallet or transaction signing routes.
  */
 
 import express from 'express';
@@ -17,18 +14,20 @@ import * as adminController from './controllers/admin-controller';
 import * as userController from './controllers/user-controller';
 import * as miningController from './controllers/mining-controller';
 import * as tokenController from './controllers/token-controller';
-import * as walletController from './controllers/wallet-controller';
 import * as statsController from './controllers/stats-controller';
 import * as systemController from './controllers/system-controller';
 import * as securityController from './controllers/security-controller';
 import * as aiController from './controllers/ai-controller';
 import * as communityController from './controllers/community-controller';
-import * as transactionController from './controllers/transaction-controller';
-import { isAuthenticated, isAdmin, isOwner, hasActiveSubscription } from './middleware/auth';
+import { isAuthenticated, isAdmin, hasActiveSubscription } from './middleware/auth';
 import { validateRequest } from './middleware/validation';
 import { z } from 'zod';
+import demoModeRoutes from '../routes/demo-mode-routes';
 
 const router = express.Router();
+
+// Demo mode routes
+router.use('/demo', demoModeRoutes);
 
 // Authentication routes
 router.post('/auth/login', async (req: Request, res: Response) => {
@@ -43,8 +42,7 @@ router.post('/auth/login', async (req: Request, res: Response) => {
     
     if (user) {
       req.session.userId = user.id;
-      req.session.isAdmin = user.role === 'ADMIN' || user.role === 'OWNER';
-      req.session.isOwner = user.role === 'OWNER';
+      req.session.isAdmin = user.role === 'ADMIN';
       
       return res.json({
         message: 'Login successful',
@@ -84,8 +82,7 @@ router.get('/auth/user', isAuthenticated, async (req: Request, res: Response) =>
       username: user.username,
       email: user.email,
       role: user.role,
-      isAdmin: user.role === 'ADMIN' || user.role === 'OWNER',
-      isOwner: user.role === 'OWNER',
+      isAdmin: user.role === 'ADMIN',
       hasActiveSubscription: await userController.checkUserSubscription(userId)
     });
   } catch (error) {
@@ -178,90 +175,88 @@ router.get('/mining/rewards', isAuthenticated, async (req: Request, res: Respons
   }
 });
 
-// Wallet routes (owner only)
-router.get('/wallet', isAuthenticated, async (req: Request, res: Response) => {
+router.post('/mining/start', isAuthenticated, hasActiveSubscription, async (req: Request, res: Response) => {
   try {
     const userId = req.session.userId;
-    const wallet = await walletController.getUserWallet(userId);
-    res.json(wallet);
+    const { deviceId, hashPower } = req.body;
+    
+    const result = await miningController.startMining(userId, deviceId, hashPower);
+    res.json(result);
   } catch (error) {
-    console.error('Error fetching wallet:', error);
-    res.status(500).json({ message: 'Failed to fetch wallet' });
+    console.error('Error starting mining:', error);
+    res.status(500).json({ message: 'Failed to start mining' });
   }
 });
 
-router.get('/wallet/balance', isAuthenticated, async (req: Request, res: Response) => {
+router.post('/mining/stop', isAuthenticated, async (req: Request, res: Response) => {
   try {
     const userId = req.session.userId;
-    const balance = await walletController.getWalletBalance(userId);
-    res.json({ balance });
+    const { deviceId } = req.body;
+    
+    const result = await miningController.stopMining(userId, deviceId);
+    res.json(result);
   } catch (error) {
-    console.error('Error fetching wallet balance:', error);
-    res.status(500).json({ message: 'Failed to fetch wallet balance' });
+    console.error('Error stopping mining:', error);
+    res.status(500).json({ message: 'Failed to stop mining' });
   }
 });
 
-router.get('/wallet/transactions', isAuthenticated, async (req: Request, res: Response) => {
+// Devices routes
+router.get('/devices', isAuthenticated, async (req: Request, res: Response) => {
   try {
     const userId = req.session.userId;
-    const transactions = await walletController.getWalletTransactions(userId);
-    res.json({ transactions });
+    const devices = await miningController.getUserDevices(userId);
+    res.json(devices);
   } catch (error) {
-    console.error('Error fetching wallet transactions:', error);
-    res.status(500).json({ message: 'Failed to fetch wallet transactions' });
+    console.error('Error fetching devices:', error);
+    res.status(500).json({ message: 'Failed to fetch devices' });
   }
 });
 
-// Transaction routes (owner only)
-router.post('/wallet/transfer', isOwner, async (req: Request, res: Response) => {
+router.post('/devices', isAuthenticated, async (req: Request, res: Response) => {
   try {
-    const { destinationAddress, amount, fee } = req.body;
-    
-    if (!destinationAddress || !amount) {
-      return res.status(400).json({ message: 'Destination address and amount are required' });
-    }
-    
-    const result = await transactionController.createTransfer(destinationAddress, amount, fee);
-    res.json(result);
+    const userId = req.session.userId;
+    const newDevice = await miningController.addUserDevice(userId, req.body);
+    res.status(201).json(newDevice);
   } catch (error) {
-    console.error('Error creating transfer:', error);
-    res.status(500).json({ message: 'Failed to create transfer' });
+    console.error('Error adding device:', error);
+    res.status(500).json({ message: 'Failed to add device' });
   }
 });
 
-router.post('/wallet/sign', isOwner, async (req: Request, res: Response) => {
+// Pool routes
+router.get('/pools', async (req: Request, res: Response) => {
   try {
-    const { transactionId } = req.body;
-    
-    if (!transactionId) {
-      return res.status(400).json({ message: 'Transaction ID is required' });
-    }
-    
-    const result = await transactionController.signTransaction(transactionId);
-    res.json(result);
+    const pools = await miningController.getMiningPools();
+    res.json({ pools });
   } catch (error) {
-    console.error('Error signing transaction:', error);
-    res.status(500).json({ message: 'Failed to sign transaction' });
+    console.error('Error fetching pools:', error);
+    res.status(500).json({ message: 'Failed to fetch mining pools' });
   }
 });
 
-router.post('/wallet/broadcast', isOwner, async (req: Request, res: Response) => {
+// Token routes (no actual wallet operations)
+router.get('/tokens/tera/info', async (req: Request, res: Response) => {
   try {
-    const { transactionId } = req.body;
-    
-    if (!transactionId) {
-      return res.status(400).json({ message: 'Transaction ID is required' });
-    }
-    
-    const result = await transactionController.broadcastTransaction(transactionId);
-    res.json(result);
+    const info = await tokenController.getTeraTokenInfo();
+    res.json(info);
   } catch (error) {
-    console.error('Error broadcasting transaction:', error);
-    res.status(500).json({ message: 'Failed to broadcast transaction' });
+    console.error('Error fetching token info:', error);
+    res.status(500).json({ message: 'Failed to fetch token information' });
   }
 });
 
-// AI system routes (admin/owner only)
+router.get('/tokens/tera/price', async (req: Request, res: Response) => {
+  try {
+    const price = await tokenController.getTeraTokenPrice();
+    res.json({ price });
+  } catch (error) {
+    console.error('Error fetching token price:', error);
+    res.status(500).json({ message: 'Failed to fetch token price' });
+  }
+});
+
+// AI system routes
 router.get('/ai/status', isAdmin, async (req: Request, res: Response) => {
   try {
     const status = await aiController.getAISystemStatus();
@@ -294,7 +289,7 @@ router.post('/ai/optimize', isAdmin, async (req: Request, res: Response) => {
   }
 });
 
-// System routes (owner only)
+// System routes (admin only)
 router.get('/system/status', isAdmin, async (req: Request, res: Response) => {
   try {
     const status = await systemController.getSystemStatus();
@@ -316,82 +311,76 @@ router.get('/system/logs', isAdmin, async (req: Request, res: Response) => {
   }
 });
 
-// Secure wallet configuration (owner only)
-router.get('/secure-wallet/status', isOwner, async (req: Request, res: Response) => {
+router.post('/system/backup', isAdmin, async (req: Request, res: Response) => {
   try {
-    const status = await walletController.getSecureWalletStatus();
-    res.json(status);
-  } catch (error) {
-    console.error('Error fetching secure wallet status:', error);
-    res.status(500).json({ message: 'Failed to fetch secure wallet status' });
-  }
-});
-
-router.post('/secure-wallet/initialize', isOwner, async (req: Request, res: Response) => {
-  try {
-    const result = await walletController.initializeSecureWallet();
+    const result = await systemController.createSystemBackup();
     res.json(result);
   } catch (error) {
-    console.error('Error initializing secure wallet:', error);
-    res.status(500).json({ message: 'Failed to initialize secure wallet' });
+    console.error('Error creating backup:', error);
+    res.status(500).json({ message: 'Failed to create system backup' });
   }
 });
 
-router.post('/secure-wallet/backup', isOwner, async (req: Request, res: Response) => {
+// Analytics routes
+router.get('/analytics/user-growth', isAdmin, async (req: Request, res: Response) => {
   try {
-    const { password } = req.body;
-    
-    if (!password) {
-      return res.status(400).json({ message: 'Password is required' });
-    }
-    
-    const result = await walletController.createWalletBackup(password);
-    res.json(result);
+    const data = await statsController.getUserGrowthStats();
+    res.json(data);
   } catch (error) {
-    console.error('Error creating wallet backup:', error);
-    res.status(500).json({ message: 'Failed to create wallet backup' });
+    console.error('Error fetching user growth stats:', error);
+    res.status(500).json({ message: 'Failed to fetch user growth statistics' });
   }
 });
 
-// Security routes (admin/owner only)
-router.get('/security/audit-log', isOwner, async (req: Request, res: Response) => {
+router.get('/analytics/mining-activity', isAdmin, async (req: Request, res: Response) => {
   try {
-    const logs = await securityController.getAuditLogs();
-    res.json({ logs });
+    const data = await statsController.getMiningActivityStats();
+    res.json(data);
   } catch (error) {
-    console.error('Error fetching audit logs:', error);
-    res.status(500).json({ message: 'Failed to fetch audit logs' });
+    console.error('Error fetching mining activity stats:', error);
+    res.status(500).json({ message: 'Failed to fetch mining activity statistics' });
   }
 });
 
-router.get('/security/access-log', isOwner, async (req: Request, res: Response) => {
+router.get('/analytics/token-metrics', isAdmin, async (req: Request, res: Response) => {
   try {
-    const logs = await securityController.getAccessLogs();
-    res.json({ logs });
+    const data = await statsController.getTokenMetricsStats();
+    res.json(data);
   } catch (error) {
-    console.error('Error fetching access logs:', error);
-    res.status(500).json({ message: 'Failed to fetch access logs' });
+    console.error('Error fetching token metrics:', error);
+    res.status(500).json({ message: 'Failed to fetch token metrics' });
   }
 });
 
-router.post('/security/keys/rotate', isOwner, async (req: Request, res: Response) => {
+// Community and social impact routes
+router.get('/community/impact-metrics', async (req: Request, res: Response) => {
   try {
-    const result = await securityController.rotateSecurityKeys();
-    res.json(result);
+    const metrics = await communityController.getSocialImpactMetrics();
+    res.json(metrics);
   } catch (error) {
-    console.error('Error rotating security keys:', error);
-    res.status(500).json({ message: 'Failed to rotate security keys' });
+    console.error('Error fetching impact metrics:', error);
+    res.status(500).json({ message: 'Failed to fetch social impact metrics' });
   }
 });
 
-// Include all routes from admin and public versions
-import adminRoutes from '../routes/admin-routes';
-import publicRoutes from '../routes/public-routes';
+router.get('/community/initiatives', async (req: Request, res: Response) => {
+  try {
+    const initiatives = await communityController.getJusticeInitiatives();
+    res.json({ initiatives });
+  } catch (error) {
+    console.error('Error fetching initiatives:', error);
+    res.status(500).json({ message: 'Failed to fetch justice initiatives' });
+  }
+});
 
-// Mount admin routes
-router.use('/admin', adminRoutes);
-
-// Mount public routes
-router.use('/public', publicRoutes);
+router.post('/community/initiatives', isAdmin, async (req: Request, res: Response) => {
+  try {
+    const newInitiative = await communityController.createJusticeInitiative(req.body);
+    res.status(201).json(newInitiative);
+  } catch (error) {
+    console.error('Error creating initiative:', error);
+    res.status(500).json({ message: 'Failed to create justice initiative' });
+  }
+});
 
 export default router;
