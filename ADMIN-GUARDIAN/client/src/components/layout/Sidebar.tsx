@@ -26,7 +26,8 @@ import {
   Shield,
   Ghost,
   Tv,
-  MessageSquareText
+  MessageSquareText,
+  Bot
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -304,13 +305,31 @@ export function Sidebar({ sidebarOpen, setSidebarOpen, className }: SidebarProps
       ),
       parent: '/admin-dashboard'
     },
-    { 
+    {
       href: '/special-wallet', 
       label: 'Special Wallet', 
       icon: ({ className }: { className?: string }) => (
         <Key className={`${className || ''} text-red-500`} />
       ),
       badge: 'Secure',
+      parent: '/admin-dashboard'
+    },
+    {
+      href: '/admin-dashboard/guardian-system',
+      label: 'Guardian System',
+      icon: ({ className }: { className?: string }) => (
+        <Shield className={`${className || ''} text-red-500`} />
+      ),
+      badge: 'Protected',
+      parent: '/admin-dashboard'
+    },
+    {
+      href: '/admin-dashboard/guardian-training',
+      label: 'Guardian Training',
+      icon: ({ className }: { className?: string }) => (
+        <Bot className={`${className || ''} text-red-500`} />
+      ),
+      badge: 'AI',
       parent: '/admin-dashboard'
     },
   ];

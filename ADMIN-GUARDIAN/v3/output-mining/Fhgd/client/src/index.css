@@ -1,0 +1,189 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 20 14.3% 4.1%;
+  --muted: 60 4.8% 95.9%;
+  --muted-foreground: 25 5.3% 44.7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14.3% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14.3% 4.1%;
+  --border: 20 5.9% 90%;
+  --input: 20 5.9% 90%;
+  --primary: 207 90% 54%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 60 4.8% 95.9%;
+  --secondary-foreground: 24 9.8% 10%;
+  --accent: 60 4.8% 95.9%;
+  --accent-foreground: 24 9.8% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  --ring: 20 14.3% 4.1%;
+  --radius: 0.5rem;
+  
+  /* Bitcoin Mining Theme Colors */
+  --bitcoin: 29 95% 55%; /* #F7931A */
+  --dark-bg: 0 0% 10%; /* #1A1A1A */
+  --card-bg: 0 0% 18%; /* #2D2D2D */
+  --elevated: 0 0% 23%; /* #3A3A3A */
+  --success: 160 84% 42%; /* #00D4AA */
+  --error: 0 77% 70%; /* #FF6B6B */
+  --muted-text: 0 0% 80%; /* #CCCCCC */
+  --border-color: 0 0% 29%; /* #4A4A4A */
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --primary: 207 90% 54%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 240 4.9% 83.9%;
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased;
+    background-color: hsl(var(--dark-bg));
+    color: white;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--card-bg));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border-color));
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--bitcoin));
+  }
+}
+
+@layer components {
+  .bitcoin-gradient {
+    background: linear-gradient(135deg, hsl(var(--bitcoin)) 0%, hsl(var(--success)) 100%);
+  }
+
+  .mining-card {
+    @apply bg-[hsl(var(--card-bg))] border-[hsl(var(--border-color))] rounded-lg border;
+    transition: border-color 0.3s ease;
+  }
+
+  .mining-card:hover {
+    border-color: hsl(var(--bitcoin));
+  }
+
+  .elevated-bg {
+    background-color: hsl(var(--elevated));
+  }
+
+  .text-bitcoin {
+    color: hsl(var(--bitcoin));
+  }
+
+  .text-success {
+    color: hsl(var(--success));
+  }
+
+  .text-error {
+    color: hsl(var(--error));
+  }
+
+  .text-muted {
+    color: hsl(var(--muted-text));
+  }
+
+  .bg-bitcoin {
+    background-color: hsl(var(--bitcoin));
+  }
+
+  .bg-success {
+    background-color: hsl(var(--success));
+  }
+
+  .bg-error {
+    background-color: hsl(var(--error));
+  }
+
+  .bg-dark-bg {
+    background-color: hsl(var(--dark-bg));
+  }
+
+  .bg-card-bg {
+    background-color: hsl(var(--card-bg));
+  }
+
+  .bg-elevated {
+    background-color: hsl(var(--elevated));
+  }
+
+  .border-bitcoin {
+    border-color: hsl(var(--bitcoin));
+  }
+
+  .border-border {
+    border-color: hsl(var(--border-color));
+  }
+
+  /* Custom slider styling */
+  .mining-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: hsl(var(--bitcoin));
+    cursor: pointer;
+  }
+
+  .mining-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: hsl(var(--bitcoin));
+    cursor: pointer;
+    border: none;
+  }
+
+  .pulse-success {
+    animation: pulse-success 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse-success {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: .5;
+    }
+  }
+}

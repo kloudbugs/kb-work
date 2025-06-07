@@ -1,0 +1,447 @@
+/* KLOUD BUGS Cosmic Theme CSS */
+
+:root {
+  /* Main color palette from cosmic design */
+  --cosmic-black: #0a0a0a;      /* Main background color */
+  --space-purple: #8a2be2;      /* Purple accent color */
+  --cyber-gold: #ffd700;        /* Gold accent color */
+  --deep-space: #111122;        /* Secondary background color */
+  --nebula-pink: #c71585;       /* Pink accent for alerts */
+  --stellar-blue: #4b0082;      /* Deep blue/indigo color */
+  --dark-matter: #1a1a2e;       /* Tertiary background color */
+  --light-gold: #ffe066;        /* Lighter gold for hover states */
+  
+  /* Additional colors */
+  --cosmic-blue: #4D9DFF;
+  --neon-green: #39FF14;
+  --star-white: #FFFFFF;
+}
+
+/* Main Background - Starry Space Effect */
+.cosmic-background {
+  background-color: var(--cosmic-black);
+  background-image: 
+    radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+    radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+    radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
+  background-size: 550px 550px, 350px 350px, 250px 250px;
+  background-position: 0 0, 40px 60px, 130px 270px;
+  color: var(--star-white);
+}
+
+/* Custom Font Classes */
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 0.05em;
+}
+
+/* Text Colors */
+.text-cyber-gold {
+  color: var(--cyber-gold);
+}
+
+.text-cosmic-blue {
+  color: var(--cosmic-blue);
+}
+
+.text-space-purple {
+  color: var(--space-purple);
+}
+
+.text-neon-green {
+  color: var(--neon-green);
+}
+
+/* Border Colors */
+.border-space-purple {
+  border-color: var(--space-purple);
+}
+
+.border-cosmic-blue {
+  border-color: var(--cosmic-blue);
+}
+
+.border-cyber-gold {
+  border-color: var(--cyber-gold);
+}
+
+/* Background Colors */
+.bg-dark-matter {
+  background-color: var(--dark-matter);
+}
+
+.bg-dark-energy {
+  background-color: var(--dark-energy);
+}
+
+.bg-cyber-gold {
+  background-color: var(--cyber-gold);
+}
+
+/* Cosmic Cards */
+.cosmic-card {
+  background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(10, 10, 10, 0.95));
+  border: 1px solid var(--space-purple);
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(138, 43, 226, 0.2);
+  overflow: hidden;
+}
+
+.cosmic-card-header {
+  background: linear-gradient(45deg, var(--stellar-blue), var(--space-purple));
+  color: var(--cyber-gold);
+  border-bottom: 2px solid var(--cyber-gold);
+  padding: 15px 20px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 600;
+}
+
+.cosmic-card-body {
+  padding: 20px;
+}
+
+/* TERA Guardian Cards (Legacy Support) */
+.tera-guardian-card {
+  background-color: rgba(17, 17, 34, 0.7);
+  border: 1px solid var(--space-purple);
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(147, 112, 219, 0.2);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.tera-guardian-header {
+  background-color: rgba(14, 14, 22, 0.9);
+  border-bottom: 1px solid var(--space-purple);
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tera-guardian-body {
+  padding: 20px;
+}
+
+.tera-guardian-icon {
+  color: var(--cyber-gold);
+}
+
+/* Status Indicators */
+.tera-status-indicator {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.tera-status-active {
+  background-color: var(--neon-green);
+  box-shadow: 0 0 8px var(--neon-green);
+}
+
+.tera-status-inactive {
+  background-color: #FF4500;
+  box-shadow: 0 0 8px #FF4500;
+}
+
+.tera-status-warning {
+  background-color: var(--cyber-gold);
+  box-shadow: 0 0 8px var(--cyber-gold);
+}
+
+/* Metrics Grid */
+.tera-guardian-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.tera-metric {
+  background-color: rgba(25, 25, 40, 0.6);
+  border: 1px solid rgba(147, 112, 219, 0.3);
+  padding: 15px;
+  border-radius: 6px;
+}
+
+.tera-metric-label {
+  font-size: 0.85rem;
+  color: var(--cosmic-blue);
+  margin-bottom: 8px;
+}
+
+.tera-metric-value {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--cyber-gold);
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* KLOUD BUGS Branding */
+.kloud-bugs-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--cyber-gold);
+  text-align: center;
+  letter-spacing: 0.15em;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+  margin: 10px 0;
+}
+
+/* Enhanced Stars Animation */
+@keyframes twinkle {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.3; }
+}
+
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: 
+      radial-gradient(2px 2px at 20px 30px, var(--cyber-gold), rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 40px 70px, var(--light-gold), rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 50px 160px, var(--cyber-gold), rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 90px 40px, var(--space-purple), rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 130px 80px, var(--light-gold), rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 160px 120px, var(--cyber-gold), rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  animation: twinkle 8s ease-in-out infinite;
+}
+
+/* Legacy Star */
+.star {
+  position: absolute;
+  background-color: white;
+  border-radius: 50%;
+  opacity: 0.2;
+  animation: twinkle 4s infinite ease-in-out;
+}
+
+/* Mining Control Elements */
+.mining-action-area {
+  background-color: rgba(22, 22, 35, 0.8);
+  border: 1px solid rgba(147, 112, 219, 0.4);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.mining-action-header {
+  background-color: rgba(14, 14, 22, 0.9);
+  padding: 10px 15px;
+  border-bottom: 1px solid rgba(147, 112, 219, 0.4);
+}
+
+.mining-action-content {
+  padding: 15px;
+}
+
+/* Loading Effects */
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+.cosmic-pulse {
+  animation: pulse 2s infinite ease-in-out;
+}
+
+/* Cosmic Buttons */
+
+/* Standard Buttons */
+.btn-cosmic {
+  background: linear-gradient(45deg, var(--stellar-blue), var(--space-purple));
+  border-color: var(--cyber-gold);
+  color: var(--cyber-gold);
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  padding: 8px 16px;
+  border-radius: 6px;
+}
+
+.btn-cosmic:hover {
+  background: linear-gradient(45deg, var(--space-purple), var(--stellar-blue));
+  border-color: var(--light-gold);
+  box-shadow: 0 0 15px rgba(138, 43, 226, 0.7);
+  transform: translateY(-2px);
+  color: white;
+}
+
+/* Ultra Flashy Main Call-to-Action Buttons */
+.cosmic-main-btn {
+  position: relative;
+  overflow: hidden;
+  padding: 15px 30px;
+  border-radius: 12px;
+  border: 2px solid var(--cyber-gold);
+  background: linear-gradient(
+      45deg,
+      rgba(138, 43, 226, 0.7),
+      rgba(75, 0, 130, 0.8),
+      rgba(25, 25, 112, 0.9)
+  );
+  background-size: 300% 100%;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--cyber-gold);
+  margin: 15px 0;
+  transition: all 0.4s ease;
+  transform-style: preserve-3d;
+  box-shadow: 
+      0 10px 15px rgba(0, 0, 0, 0.4),
+      0 0 30px 5px rgba(138, 43, 226, 0.3);
+}
+
+.cosmic-main-btn:hover {
+  transform: translateY(-5px) scale(1.03);
+  color: white;
+  text-shadow: 
+      0 0 10px var(--cyber-gold),
+      0 0 20px var(--cyber-gold);
+  box-shadow: 
+      0 0 30px 5px rgba(255, 215, 0, 0.7), 
+      0 0 40px 10px rgba(138, 43, 226, 0.4);
+}
+
+.cosmic-main-btn:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+      90deg, 
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+  );
+  z-index: 1;
+}
+
+.cosmic-main-btn:hover:before {
+  animation: cosmic-rays 1s infinite;
+}
+
+.cosmic-main-btn span {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes cosmic-rays {
+  0% {
+      opacity: 0.2;
+      transform: translateX(-100%);
+  }
+  20% {
+      opacity: 0.8;
+      transform: translateX(0);
+  }
+  100% {
+      opacity: 0;
+      transform: translateX(100%);
+  }
+}
+
+/* Action Buttons (Search, Browse Database) */
+.cosmic-action-btn {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding: 16px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 2px solid;
+  border-image: linear-gradient(45deg, var(--cyber-gold), var(--space-purple), var(--nebula-pink), var(--cyber-gold)) 1;
+  background: linear-gradient(
+      45deg,
+      rgba(25, 25, 112, 0.9),
+      rgba(75, 0, 130, 0.8),
+      rgba(138, 43, 226, 0.7)
+  );
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--cyber-gold);
+  transition: all 0.3s ease;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  box-shadow: 
+      0 8px 15px rgba(0, 0, 0, 0.3),
+      0 0 20px 5px rgba(138, 43, 226, 0.2),
+      inset 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+.cosmic-action-btn:hover {
+  transform: translateY(-5px);
+  color: white;
+  background: linear-gradient(
+      45deg,
+      rgba(138, 43, 226, 0.8),
+      rgba(75, 0, 130, 0.9),
+      rgba(25, 25, 112, 1)
+  );
+  box-shadow: 
+      0 15px 25px rgba(0, 0, 0, 0.4),
+      0 0 30px 10px rgba(138, 43, 226, 0.4),
+      inset 0 0 20px rgba(255, 215, 0, 0.4);
+  text-shadow: 
+      0 0 10px white,
+      0 0 20px var(--cyber-gold);
+}
+
+/* Cosmic Dividers */
+.cosmic-divider {
+  display: flex;
+  align-items: center;
+  margin: 15px 0;
+}
+
+.cosmic-line {
+  flex-grow: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--space-purple), transparent);
+}
+
+.cosmic-icon {
+  padding: 0 15px;
+  font-size: 1.2rem;
+  color: var(--cyber-gold);
+}
+
+/* Glowing Elements */
+.glow-text {
+  text-shadow: 0 0 5px currentColor;
+}
+
+.glow-border {
+  box-shadow: 0 0 8px var(--space-purple);
+}
+
+/* Bitcoin Rotating Icon */
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.bitcoin-icon {
+  color: var(--cyber-gold);
+  animation: rotate 20s linear infinite;
+  display: inline-block;
+}

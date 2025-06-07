@@ -21,7 +21,8 @@ export default function Wallet() {
   // Define wallet data type
   interface WalletData {
     user: {
-      walletAddress: string;
+      hardwareWalletAddress: string;
+      teraWalletAddress: string;
       payoutThreshold: string;
       payoutSchedule: string;
       autoPayouts: boolean;
@@ -29,6 +30,7 @@ export default function Wallet() {
     balance: number;
     balanceUSD: number;
     minimumBalance: number;
+    transferType: 'BTC' | 'TERA';
   }
   
   // Query for wallet details with auto-refetch enabled
@@ -47,14 +49,16 @@ export default function Wallet() {
       
       return {
         user: {
-          walletAddress: data?.address || '',
+          hardwareWalletAddress: "bc1qfavnkrku005m4kdkvdtgthur4ha06us2lppdps",
+          teraWalletAddress: "bc1qj93mnxgm0xuwyh3jvvqurjxjyq8uktg4y0sad6",
           payoutThreshold: data?.payoutThreshold || '0.001',
           payoutSchedule: data?.payoutSchedule || 'daily',
           autoPayouts: data?.autoPayout || true
         },
         balance: balance,
         balanceUSD: typeof data?.balanceUSD === 'string' ? parseFloat(data.balanceUSD) : (data?.balanceUSD || 0),
-        minimumBalance: minimumBalance
+        minimumBalance: minimumBalance,
+        transferType: 'BTC' as 'BTC' | 'TERA'
       };
     }
   });
@@ -352,12 +356,21 @@ export default function Wallet() {
               <div className="text-md font-mono mt-1 text-center text-gray-600 dark:text-gray-400">
                 {walletLoading ? (
                   <Skeleton className="h-6 w-32" />
-                ) : wallet?.user?.walletAddress ? (
-                  <code className="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded">
-                    {wallet.user.walletAddress}
-                  </code>
                 ) : (
-                  "No wallet address configured"
+                  <div className="space-y-2">
+                    <div>
+                      <span className="text-xs text-gray-500">Hardware Wallet (BTC):</span>
+                      <code className="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded block mt-1">
+                        {wallet?.user?.hardwareWalletAddress}
+                      </code>
+                    </div>
+                    <div>
+                      <span className="text-xs text-gray-500">Tera Rewards:</span>
+                      <code className="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded block mt-1">
+                        {wallet?.user?.teraWalletAddress}
+                      </code>
+                    </div>
+                  </div>
                 )}
               </div>
               
@@ -385,10 +398,20 @@ export default function Wallet() {
               </div>
               
               <div className="text-lg font-mono mt-2 text-center text-gray-600 dark:text-gray-400">
-                {wallet?.user?.walletAddress && (
-                  <code className="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded">
-                    {wallet.user.walletAddress}
-                  </code>
+                <div className="space-y-2">
+                  <div>
+                    <span className="text-xs text-gray-500">Hardware Wallet (BTC):</span>
+                    <code className="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded block mt-1">
+                      {wallet?.user?.hardwareWalletAddress}
+                    </code>
+                  </div>
+                  <div>
+                    <span className="text-xs text-gray-500">Tera Rewards:</span>
+                    <code className="text-xs bg-gray-100 dark:bg-gray-700 p-1 rounded block mt-1">
+                      {wallet?.user?.teraWalletAddress}
+                    </code>
+                  </div>
+                </div>
                 )}
               </div>
               
@@ -398,7 +421,7 @@ export default function Wallet() {
               
               <div className="mt-2 flex justify-center">
                 <a 
-                  href={`https://unmineable.com/coins/BTC/address/${wallet?.user?.walletAddress}`}
+                  href={`https://unmineable.com/coins/BTC/address/${wallet?.user?.hardwareWalletAddress}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -415,7 +438,7 @@ export default function Wallet() {
           <div className="mt-6 p-4 bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-lg">
             <h4 className="text-sm font-medium text-green-800 dark:text-green-200 mb-1">Real Mining Rewards:</h4>
             <p className="text-xs text-green-700 dark:text-green-300">
-              This application now exclusively handles real mining operations. All rewards are paid directly by the mining pool (Unmineable) to your Bitcoin wallet address (bc1qfavnkrku005m4kdkvdtgthur4ha06us2lppdps) when you reach their minimum payout threshold (typically 0.0005 BTC).
+              This application now exclusively handles real mining operations. All Bitcoin mining rewards are paid directly by the mining pool (Unmineable) to the platform's hardware wallet address ({wallet?.user?.hardwareWalletAddress}), while Tera token rewards go to the dedicated Tera wallet ({wallet?.user?.teraWalletAddress}). Payouts occur when you reach the minimum threshold (typically 0.0005 BTC).
             </p>
           </div>
         </div>
@@ -453,7 +476,7 @@ export default function Wallet() {
                 <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Tracking</h3>
                 <p className="text-lg font-semibold capitalize">
                   <a 
-                    href={`https://unmineable.com/coins/BTC/address/${wallet?.user?.walletAddress}`}
+                    href={`https://unmineable.com/coins/BTC/address/${wallet?.user?.hardwareWalletAddress}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:underline dark:text-blue-400"

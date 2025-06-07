@@ -464,15 +464,6 @@ export default function AdminDashboard({ section = 'main' }: AdminDashboardProps
         <Card className="mb-6 bg-gray-900/60 border-gray-800">
           <CardContent className="py-4">
             <div className="flex flex-wrap gap-2">
-              {/* Guardians Section - Added Above Admin Controls */}
-              <Button 
-                variant={section === 'guardians' ? "default" : "outline"}
-                className={section === 'guardians' ? "bg-amber-700 hover:bg-amber-600" : "border-amber-700 text-amber-400 hover:bg-amber-900/20"}
-                onClick={() => setLocation('/guardians')}
-              >
-                <Crown className="h-4 w-4 mr-2 text-yellow-400" />
-                Guardians
-              </Button>
               
               <Button 
                 variant={section === 'ghost' || section === 'main' ? "default" : "outline"}
@@ -638,6 +629,10 @@ export default function AdminDashboard({ section = 'main' }: AdminDashboardProps
                 <AlertTriangle className="h-4 w-4 mr-2" />
                 Emergency Controls
               </TabsTrigger>
+              <TabsTrigger value="guardian-training" className="data-[state=active]:bg-amber-900">
+                <Crown className="h-4 w-4 mr-2" />
+                Guardian Training
+              </TabsTrigger>
               <TabsTrigger value="settings" className="data-[state=active]:bg-gray-700">
                 <Settings className="h-4 w-4 mr-2" />
                 Settings
@@ -647,6 +642,56 @@ export default function AdminDashboard({ section = 'main' }: AdminDashboardProps
             {/* System Controls Tab Content */}
             <TabsContent value="emergency" className="mt-0">
               <EmergencySystemController />
+            </TabsContent>
+            
+            <TabsContent value="guardian-training" className="mt-0">
+              <div className="space-y-4">
+                <Card className="bg-gradient-to-br from-gray-900/80 to-amber-900/20 backdrop-blur-sm border border-amber-800/50">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Crown className="h-6 w-6 text-amber-400" />
+                      Guardian Training Center
+                    </CardTitle>
+                    <CardDescription>
+                      Access the full Guardian Training Center for AI system management
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <p className="text-gray-300">
+                        The Guardian Training Center provides comprehensive tools for managing AI guardians, 
+                        training modules, certification processes, and API key management.
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="bg-gray-900/50 rounded-lg p-4 border border-amber-800/30">
+                          <h3 className="text-lg font-medium text-amber-400 mb-2">Features Available</h3>
+                          <ul className="space-y-1 text-sm text-gray-300">
+                            <li>• Guardian Recruit Management</li>
+                            <li>• Training Module Administration</li>
+                            <li>• Certification System</li>
+                            <li>• API Key Management</li>
+                            <li>• Performance Analytics</li>
+                          </ul>
+                        </div>
+                        <div className="bg-gray-900/50 rounded-lg p-4 border border-amber-800/30">
+                          <h3 className="text-lg font-medium text-amber-400 mb-2">Access Level</h3>
+                          <p className="text-sm text-gray-300 mb-3">
+                            Full administrative access to all Guardian Training Center functions.
+                          </p>
+                          <Badge className="bg-amber-700 text-white">Admin Access</Badge>
+                        </div>
+                      </div>
+                      <Button 
+                        className="w-full bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white"
+                        onClick={() => setLocation('/admin-dashboard/guardian-training')}
+                      >
+                        <Crown className="h-4 w-4 mr-2" />
+                        Access Guardian Training Center
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             </TabsContent>
             
             <TabsContent value="settings" className="mt-0">

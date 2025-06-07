@@ -1,0 +1,546 @@
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import RealTimeMiningDashboard from '../components/mining/real-time-mining-dashboard';
+import AIChatHub from '../components/ai/ai-chat-hub';
+import UnifiedMiningPanel from '../components/mining/unified-mining-panel';
+
+export default function IntegratedDashboard() {
+  return (
+    <div className="cosmic-background min-h-screen py-6 px-4">
+      {/* Add stars animation overlay */}
+      <div className="stars"></div>
+      
+      <div className="container mx-auto px-4 py-6 relative z-10">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+          <div>
+            <h1 className="text-3xl font-orbitron font-bold text-cyber-gold glow-text">KLOUD BUGS MINING COMMAND CENTER</h1>
+            <p className="text-cosmic-blue mt-1">All-in-one control for your mining operations and cosmic café</p>
+          </div>
+          
+          <div className="space-x-3">
+            <a href="/c12/cafe" target="_blank" rel="noopener noreferrer">
+              <button className="btn-cosmic">
+                Visit Cosmic Café
+              </button>
+            </a>
+            <a href="/c12/guardian" target="_blank" rel="noopener noreferrer">
+              <button className="cosmic-action-btn px-4 py-2 inline-block">
+                TERA Guardian
+              </button>
+            </a>
+          </div>
+        </div>
+        
+        {/* Cosmic divider */}
+        <div className="cosmic-divider mb-6">
+          <div className="cosmic-line"></div>
+          <div className="cosmic-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="bitcoin-icon">
+              <path d="M11.767 19.089c4.924.868 9.593-2.235 10.461-7.159.868-4.924-2.235-9.593-7.159-10.461-4.924-.868-9.593 2.235-10.461 7.159-.868 4.924 2.235 9.593 7.159 10.461z"/>
+              <path d="M15.5 10.5h-1a2 2 0 1 1 0-4h1.4a.6.6 0 0 1 .6.6v.4m-3 3v4m-3-8v8m11-4h-7"/>
+            </svg>
+          </div>
+          <div className="cosmic-line"></div>
+        </div>
+      
+        <Tabs defaultValue="mining" className="w-full">
+          <TabsList className="grid grid-cols-6 mb-6 bg-dark-matter/70 p-1 rounded-lg border-space-purple border">
+            <TabsTrigger value="mining" className="font-orbitron text-sm py-2 data-[state=active]:bg-space-purple/30 data-[state=active]:text-cyber-gold data-[state=active]:shadow-[0_0_10px_var(--cyber-gold)]">MINING COMMAND</TabsTrigger>
+            <TabsTrigger value="api-mining" className="font-orbitron text-sm py-2 data-[state=active]:bg-space-purple/30 data-[state=active]:text-cyber-gold data-[state=active]:shadow-[0_0_10px_var(--cyber-gold)]">API MINING</TabsTrigger>
+            <TabsTrigger value="ai-hub" className="font-orbitron text-sm py-2 data-[state=active]:bg-space-purple/30 data-[state=active]:text-cyber-gold data-[state=active]:shadow-[0_0_10px_var(--cyber-gold)]">AI CONTROL HUB</TabsTrigger>
+            <TabsTrigger value="kloudbugs" className="font-orbitron text-sm py-2 data-[state=active]:bg-space-purple/30 data-[state=active]:text-cyber-gold data-[state=active]:shadow-[0_0_10px_var(--cyber-gold)]">KLOUD BUGS</TabsTrigger>
+            <TabsTrigger value="puzzles" className="font-orbitron text-sm py-2 data-[state=active]:bg-space-purple/30 data-[state=active]:text-cyber-gold data-[state=active]:shadow-[0_0_10px_var(--cyber-gold)]">CRYPTO PUZZLES</TabsTrigger>
+            <TabsTrigger value="brew" className="font-orbitron text-sm py-2 data-[state=active]:bg-space-purple/30 data-[state=active]:text-cyber-gold data-[state=active]:shadow-[0_0_10px_var(--cyber-gold)]">BREW STATION</TabsTrigger>
+          </TabsList>
+        
+        {/* Mining Dashboard Tab */}
+        <TabsContent value="mining" className="space-y-6">
+          <RealTimeMiningDashboard />
+        </TabsContent>
+        
+        {/* API Mining Tab */}
+        <TabsContent value="api-mining" className="space-y-6">
+          <div className="cosmic-card">
+            <div className="cosmic-card-header">
+              <h3 className="text-xl font-orbitron text-cyber-gold">XMRig HTTP API Integration</h3>
+              <p className="text-star-white text-sm mt-1">Connect to all your XMRig miners from one central dashboard</p>
+            </div>
+            <div className="cosmic-card-body">
+              <UnifiedMiningPanel />
+            </div>
+          </div>
+          
+          <div className="cosmic-card">
+            <div className="cosmic-card-header">
+              <h3 className="text-xl font-orbitron text-cyber-gold">API Mining Control Center</h3>
+              <p className="text-star-white text-sm mt-1">Add and manage external mining operations targeting your Bitcoin address</p>
+            </div>
+            <div className="cosmic-card-body">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="space-y-4">
+                  <h3 className="font-medium text-lg">Add Mining Service</h3>
+                  <div className="grid gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Service Name</label>
+                      <input 
+                        type="text" 
+                        placeholder="E.g., MiningRigRentals API" 
+                        className="w-full p-2 border rounded-md"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">API Key</label>
+                      <input 
+                        type="password" 
+                        placeholder="Enter API Key" 
+                        className="w-full p-2 border rounded-md"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">API Secret</label>
+                      <input 
+                        type="password" 
+                        placeholder="Enter API Secret" 
+                        className="w-full p-2 border rounded-md"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Mining Power (TH/s)</label>
+                      <input 
+                        type="number" 
+                        placeholder="E.g., 100" 
+                        className="w-full p-2 border rounded-md"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Wallet Address</label>
+                      <input 
+                        type="text" 
+                        value="bc1qj93mnxgm0xuwyh3jvvqurjxjyq8uktg4y0sad6"
+                        readOnly
+                        className="w-full p-2 border rounded-md text-gray-500"
+                      />
+                    </div>
+                    <Button className="mt-2" variant="default">Add Mining Service</Button>
+                  </div>
+                </div>
+                
+                <div className="space-y-4">
+                  <h3 className="font-medium text-lg">Active Mining Services</h3>
+                  <div className="border rounded-md divide-y">
+                    <div className="p-4">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h4 className="font-medium">NiceHash API</h4>
+                          <p className="text-sm text-muted-foreground">250 TH/s</p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <div className="flex items-center text-green-500 text-sm">
+                            <span className="w-2 h-2 rounded-full bg-green-500 mr-1"></span>
+                            Active
+                          </div>
+                          <Button variant="outline" size="sm">Configure</Button>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="p-4">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h4 className="font-medium">MiningRigRentals</h4>
+                          <p className="text-sm text-muted-foreground">180 TH/s</p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <div className="flex items-center text-green-500 text-sm">
+                            <span className="w-2 h-2 rounded-full bg-green-500 mr-1"></span>
+                            Active
+                          </div>
+                          <Button variant="outline" size="sm">Configure</Button>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="p-4">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h4 className="font-medium">ECOS Cloud Mining</h4>
+                          <p className="text-sm text-muted-foreground">75 TH/s</p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <div className="flex items-center text-amber-500 text-sm">
+                            <span className="w-2 h-2 rounded-full bg-amber-500 mr-1"></span>
+                            Maintenance
+                          </div>
+                          <Button variant="outline" size="sm">Configure</Button>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="p-4">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h4 className="font-medium">HashFlare Service</h4>
+                          <p className="text-sm text-muted-foreground">120 TH/s</p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <div className="flex items-center text-green-500 text-sm">
+                            <span className="w-2 h-2 rounded-full bg-green-500 mr-1"></span>
+                            Active
+                          </div>
+                          <Button variant="outline" size="sm">Configure</Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="rounded-md bg-muted p-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <h4 className="font-medium">Total Mining Power</h4>
+                      <span className="font-bold">625 TH/s</span>
+                    </div>
+                    <div className="flex justify-between items-center mb-2">
+                      <h4 className="font-medium">Estimated Daily Rewards</h4>
+                      <span className="font-bold">0.00384 BTC</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <h4 className="font-medium">Wallet Address</h4>
+                      <span className="text-sm font-mono">bc1qj93m...sad6</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <h3 className="font-medium text-lg mb-4">Mining API Integration Stats</h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse">
+                    <thead>
+                      <tr className="bg-muted">
+                        <th className="text-left p-2 border">API Service</th>
+                        <th className="text-left p-2 border">Mining Power</th>
+                        <th className="text-left p-2 border">Status</th>
+                        <th className="text-left p-2 border">Daily Cost</th>
+                        <th className="text-left p-2 border">Daily Profit</th>
+                        <th className="text-left p-2 border">ROI</th>
+                        <th className="text-left p-2 border">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td className="p-2 border">NiceHash API</td>
+                        <td className="p-2 border">250 TH/s</td>
+                        <td className="p-2 border"><span className="text-green-500">Active</span></td>
+                        <td className="p-2 border">$45.20</td>
+                        <td className="p-2 border">$52.63</td>
+                        <td className="p-2 border"><span className="text-green-500">+16.4%</span></td>
+                        <td className="p-2 border">
+                          <Button variant="outline" size="sm">Edit</Button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="p-2 border">MiningRigRentals</td>
+                        <td className="p-2 border">180 TH/s</td>
+                        <td className="p-2 border"><span className="text-green-500">Active</span></td>
+                        <td className="p-2 border">$32.40</td>
+                        <td className="p-2 border">$37.89</td>
+                        <td className="p-2 border"><span className="text-green-500">+16.9%</span></td>
+                        <td className="p-2 border">
+                          <Button variant="outline" size="sm">Edit</Button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="p-2 border">ECOS Cloud Mining</td>
+                        <td className="p-2 border">75 TH/s</td>
+                        <td className="p-2 border"><span className="text-amber-500">Maintenance</span></td>
+                        <td className="p-2 border">$13.50</td>
+                        <td className="p-2 border">$0.00</td>
+                        <td className="p-2 border"><span className="text-red-500">-100%</span></td>
+                        <td className="p-2 border">
+                          <Button variant="outline" size="sm">Edit</Button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="p-2 border">HashFlare Service</td>
+                        <td className="p-2 border">120 TH/s</td>
+                        <td className="p-2 border"><span className="text-green-500">Active</span></td>
+                        <td className="p-2 border">$21.60</td>
+                        <td className="p-2 border">$25.26</td>
+                        <td className="p-2 border"><span className="text-green-500">+17.0%</span></td>
+                        <td className="p-2 border">
+                          <Button variant="outline" size="sm">Edit</Button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        {/* AI Control Hub Tab */}
+        <TabsContent value="ai-hub" className="space-y-6">
+          <div className="h-[calc(70vh)]">
+            <AIChatHub />
+          </div>
+        </TabsContent>
+        
+        {/* KLOUD BUGS Tab */}
+        <TabsContent value="kloudbugs" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader className="pb-3">
+                <CardTitle>Welcome Experience</CardTitle>
+                <CardDescription>Our cosmic animated welcome experience</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Experience the full animated entry to the KLOUD BUGS universe with our signature welcome sequence.
+                </p>
+                <Button variant="outline" className="w-full" onClick={() => window.open('/c12/welcome', '_blank')}>
+                  Launch Animated Welcome
+                </Button>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader className="pb-3">
+                <CardTitle>KLOUD BUGS Café</CardTitle>
+                <CardDescription>The cosmic space café experience</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Visit our space-themed café where blockchain enthusiasts meet over cosmic brews and share experiences.
+                </p>
+                <Button variant="outline" className="w-full" onClick={() => window.open('/c12/cafe', '_blank')}>
+                  Enter the Café
+                </Button>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader className="pb-3">
+                <CardTitle>Bitcoin Database</CardTitle>
+                <CardDescription>Explore the Bitcoin key database</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Browse through our comprehensive database of Bitcoin keys and addresses for educational purposes.
+                </p>
+                <Button variant="outline" className="w-full" onClick={() => window.open('/c12/bitcoin-db', '_blank')}>
+                  Open Bitcoin Database
+                </Button>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader className="pb-3">
+                <CardTitle>Bitcoin Lottery</CardTitle>
+                <CardDescription>Try your luck with Bitcoin keys</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Generate random private keys and check if they match any funded Bitcoin addresses.
+                </p>
+                <Button variant="outline" className="w-full" onClick={() => window.open('/c12/lottery', '_blank')}>
+                  Enter the Lottery
+                </Button>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader className="pb-3">
+                <CardTitle>Key Search</CardTitle>
+                <CardDescription>Search for specific Bitcoin keys</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Search our database for specific Bitcoin addresses, private keys, or patterns.
+                </p>
+                <Button variant="outline" className="w-full" onClick={() => window.open('/c12/search', '_blank')}>
+                  Open Search Tool
+                </Button>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader className="pb-3">
+                <CardTitle>Animation Center</CardTitle>
+                <CardDescription>Experience our cosmic animations</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  View all the cosmic animations and visual effects from the KLOUD BUGS universe.
+                </p>
+                <Button variant="outline" className="w-full" onClick={() => window.open('/c12/welcome', '_blank')}>
+                  View Animations
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+        
+        {/* Crypto Puzzles Tab */}
+        <TabsContent value="puzzles" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader className="pb-3">
+                <CardTitle>Crypto Puzzles Hub</CardTitle>
+                <CardDescription>The main hub for all our cryptographic puzzles</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Our crypto puzzles are designed to test your knowledge of cryptography, blockchain technology, and problem-solving skills.
+                </p>
+                <Button variant="outline" className="w-full" onClick={() => window.open('/c12/puzzles', '_blank')}>
+                  Enter Puzzles Hub
+                </Button>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader className="pb-3">
+                <CardTitle>Puzzle List</CardTitle>
+                <CardDescription>Comprehensive list of all available puzzles</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Browse the complete list of all our cryptographic puzzles, from beginner to advanced difficulty levels.
+                </p>
+                <Button variant="outline" className="w-full" onClick={() => window.open('/c12/puzzle-list', '_blank')}>
+                  View Puzzle List
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Featured Puzzles</CardTitle>
+              <CardDescription>Our most popular cryptographic challenges</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="p-4 border rounded-md hover:bg-muted/50 cursor-pointer">
+                  <h3 className="font-medium mb-1">The Vanity Address</h3>
+                  <p className="text-sm text-muted-foreground mb-2">Find a Bitcoin address that starts with specific characters</p>
+                  <div className="text-xs bg-muted py-1 px-2 inline-block rounded">Difficulty: Medium</div>
+                </div>
+                
+                <div className="p-4 border rounded-md hover:bg-muted/50 cursor-pointer">
+                  <h3 className="font-medium mb-1">Hash Collision Challenge</h3>
+                  <p className="text-sm text-muted-foreground mb-2">Find two inputs that produce the same hash output</p>
+                  <div className="text-xs bg-muted py-1 px-2 inline-block rounded">Difficulty: Hard</div>
+                </div>
+                
+                <div className="p-4 border rounded-md hover:bg-muted/50 cursor-pointer">
+                  <h3 className="font-medium mb-1">The Private Key Hunt</h3>
+                  <p className="text-sm text-muted-foreground mb-2">Follow the clues to discover a private key with funds</p>
+                  <div className="text-xs bg-muted py-1 px-2 inline-block rounded">Difficulty: Expert</div>
+                </div>
+                
+                <div className="p-4 border rounded-md hover:bg-muted/50 cursor-pointer">
+                  <h3 className="font-medium mb-1">Satoshi's Message</h3>
+                  <p className="text-sm text-muted-foreground mb-2">Decode the hidden message in the Bitcoin blockchain</p>
+                  <div className="text-xs bg-muted py-1 px-2 inline-block rounded">Difficulty: Medium</div>
+                </div>
+                
+                <div className="p-4 border rounded-md hover:bg-muted/50 cursor-pointer">
+                  <h3 className="font-medium mb-1">Blockchain Riddles</h3>
+                  <p className="text-sm text-muted-foreground mb-2">Solve the series of riddles about blockchain technology</p>
+                  <div className="text-xs bg-muted py-1 px-2 inline-block rounded">Difficulty: Easy</div>
+                </div>
+                
+                <div className="p-4 border rounded-md hover:bg-muted/50 cursor-pointer">
+                  <h3 className="font-medium mb-1">The Merkle Tree Challenge</h3>
+                  <p className="text-sm text-muted-foreground mb-2">Reconstruct a Merkle tree from partial information</p>
+                  <div className="text-xs bg-muted py-1 px-2 inline-block rounded">Difficulty: Hard</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        {/* Brew Station Tab */}
+        <TabsContent value="brew" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader className="pb-3">
+                <CardTitle>Cosmic Brew Station</CardTitle>
+                <CardDescription>Craft your perfect cosmic brew</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Visit our brew station to create and customize your own cosmic coffee blends, specially designed to enhance your mining experience.
+                </p>
+                <Button variant="outline" className="w-full" onClick={() => window.open('/c12/brewery', '_blank')}>
+                  Enter Brew Station
+                </Button>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader className="pb-3">
+                <CardTitle>Specialty Brews</CardTitle>
+                <CardDescription>Our signature cosmic coffee blends</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Explore our menu of specialty brews, each designed with unique ingredients and cosmic properties.
+                </p>
+                <Button variant="outline" className="w-full" onClick={() => window.open('/c12/brew-detail', '_blank')}>
+                  View Specialty Brews
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Featured Cosmic Brews</CardTitle>
+              <CardDescription>Our most popular cosmic coffee blends</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="p-4 border rounded-md hover:bg-muted/50 cursor-pointer">
+                  <div className="aspect-square mb-3 rounded-md bg-gradient-to-br from-amber-300 to-amber-600"></div>
+                  <h3 className="font-medium mb-1">Cosmic Latte</h3>
+                  <p className="text-sm text-muted-foreground mb-2">A smooth vanilla latte infused with star anise and gold dust</p>
+                  <div className="text-sm font-medium text-amber-600 dark:text-amber-400">4.2 BTC</div>
+                </div>
+                
+                <div className="p-4 border rounded-md hover:bg-muted/50 cursor-pointer">
+                  <div className="aspect-square mb-3 rounded-md bg-gradient-to-br from-blue-300 to-purple-600"></div>
+                  <h3 className="font-medium mb-1">Nebula Cold Brew</h3>
+                  <p className="text-sm text-muted-foreground mb-2">Cold brew coffee with swirls of blue and purple galaxy cream</p>
+                  <div className="text-sm font-medium text-blue-600 dark:text-blue-400">4.5 BTC</div>
+                </div>
+                
+                <div className="p-4 border rounded-md hover:bg-muted/50 cursor-pointer">
+                  <div className="aspect-square mb-3 rounded-md bg-gradient-to-br from-orange-300 to-yellow-600"></div>
+                  <h3 className="font-medium mb-1">Bitcoin Brew</h3>
+                  <p className="text-sm text-muted-foreground mb-2">Strong espresso with honey and citrus, gives you energy for mining</p>
+                  <div className="text-sm font-medium text-orange-600 dark:text-orange-400">3.21 BTC</div>
+                </div>
+                
+                <div className="p-4 border rounded-md hover:bg-muted/50 cursor-pointer">
+                  <div className="aspect-square mb-3 rounded-md bg-gradient-to-br from-stone-700 to-stone-900"></div>
+                  <h3 className="font-medium mb-1">Quantum Mocha</h3>
+                  <p className="text-sm text-muted-foreground mb-2">Rich chocolate with espresso that exists in multiple states until consumed</p>
+                  <div className="text-sm font-medium text-stone-600 dark:text-stone-400">5.0 BTC</div>
+                </div>
+              </div>
+              
+              <div className="mt-4 p-4 bg-muted/50 rounded-md text-center">
+                <p className="text-sm">All cosmic brews have been scientifically formulated to enhance mining performance</p>
+                <p className="text-xs text-muted-foreground mt-1">Results may vary based on hardware configurations and individual perception</p>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}

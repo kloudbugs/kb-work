@@ -1,0 +1,63 @@
+version: "3.8"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: kloudbugs-mining_web_1
+      APP_PORT: 5000
+      PROXY_AUTH_WHITELIST: "/api/*"
+
+  web:
+    build: .
+    restart: on-failure
+    stop_grace_period: 1m
+    environment:
+      # Database configuration
+      DATABASE_URL: "postgresql://postgres:password@db:5432/mining_platform"
+      
+      # Bitcoin node connection (Umbrel's Bitcoin node)
+      BITCOIN_RPC_HOST: "bitcoin"
+      BITCOIN_RPC_PORT: "8332"
+      BITCOIN_RPC_USER: "bitcoin"
+      BITCOIN_RPC_PASSWORD: "password"
+      
+      # Application settings
+      NODE_ENV: "production"
+      PORT: "5000"
+      
+      # Mining configuration
+      MINING_ENABLED: "true"
+      SOLO_MINING_ENABLED: "true"
+      
+    volumes:
+      # Persistent storage for mining data and logs
+      - ${APP_DATA_DIR}/data:/app/data
+      - ${APP_DATA_DIR}/miners:/app/miners
+      - ${APP_DATA_DIR}/logs:/app/logs
+      
+      # Share Bitcoin data directory for solo mining
+      - ${BITCOIN_DATA_DIR}:/bitcoin:ro
+      
+    networks:
+      - default
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+
+  db:
+    image: postgres:15-alpine
+    restart: on-failure
+    environment:
+      POSTGRES_DB: mining_platform
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ${APP_DATA_DIR}/postgresql:/var/lib/postgresql/data
+    networks:
+      - default
+
+networks:
+  default:
+    name: umbrel_main_network
+    external: true

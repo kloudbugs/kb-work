@@ -31,6 +31,8 @@ import TeraLegacyRootsPage from "@/pages/TeraLegacyRootsPage";
 import TeraLegacySeedsPage from "@/pages/TeraLegacySeedsPage";
 import TeraMissionPage from "@/pages/TeraMissionPage";
 import FamilyAccessPage from "@/pages/FamilyAccessPage";
+import GuardianSystem from "@/pages/GuardianSystem";
+import GuardianTraining from "@/pages/GuardianTraining";
 
 // Website Components
 import Home from "@/components/website/Home";
@@ -238,6 +240,12 @@ function Router() {
       </Route>
       <Route path="/network-dashboard">
         <ProtectedRoute component={NetworkDashboard} />
+      </Route>
+      <Route path="/admin-dashboard/guardian-system">
+        <ProtectedRoute component={GuardianSystem} />
+      </Route>
+      <Route path="/admin-dashboard/guardian-training">
+        <ProtectedRoute component={GuardianTraining} />
       </Route>
       <Route component={NotFound} />
     </Switch>

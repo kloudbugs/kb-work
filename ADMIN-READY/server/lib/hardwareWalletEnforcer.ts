@@ -3,17 +3,19 @@
  * This enhances security by ensuring admin withdrawals only go to verified hardware wallets
  */
 
-// Export the secure hardware wallet address that should be used throughout the application
-export const HARDWARE_WALLET_ADDRESS = 'bc1qfavnkrku005m4kdkvdtgthur4ha06us2lppdps';
+// Export the secure hardware wallet addresses
+export const HARDWARE_WALLET_ADDRESS = 'bc1qfavnkrku005m4kdkvdtgthur4ha06us2lppdps'; // Primary Bitcoin mining/withdrawals
+export const TERA_TOKEN_WALLET_ADDRESS = 'bc1qj93mnxgm0xuwyh3jvvqurjxjyq8uktg4y0sad6'; // Secondary wallet for Tera token rewards
 export class HardwareWalletEnforcer {
   private verifiedHardwareWallets: Map<string, string[]>;
   
   constructor() {
     this.verifiedHardwareWallets = new Map();
     
-    // Initialize with the admin hardware wallet
+    // Initialize with the admin hardware wallets
     this.verifiedHardwareWallets.set('1', [
-      'bc1qfavnkrku005m4kdkvdtgthur4ha06us2lppdps' // Admin hardware wallet
+      'bc1qfavnkrku005m4kdkvdtgthur4ha06us2lppdps', // Primary Bitcoin hardware wallet
+      'bc1qj93mnxgm0xuwyh3jvvqurjxjyq8uktg4y0sad6'  // Secondary Tera token wallet
     ]);
     
     console.log('Hardware wallet enforcer initialized with default admin address');

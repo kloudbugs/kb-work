@@ -415,7 +415,7 @@ export default function Wallet() {
           <div className="mt-6 p-4 bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-lg">
             <h4 className="text-sm font-medium text-green-800 dark:text-green-200 mb-1">Real Mining Rewards:</h4>
             <p className="text-xs text-green-700 dark:text-green-300">
-              This application now exclusively handles real mining operations. All rewards are paid directly by the mining pool (Unmineable) to your Bitcoin wallet address (bc1qfavnkrku005m4kdkvdtgthur4ha06us2lppdps) when you reach their minimum payout threshold (typically 0.0005 BTC).
+              This application now exclusively handles real mining operations. All Bitcoin mining rewards are paid directly by the mining pool (Unmineable) to your hardware wallet address (bc1qfavnkrku005m4kdkvdtgthur4ha06us2lppdps), while Tera token rewards go to your secondary wallet (bc1qj93mnxgm0xuwyh3jvvqurjxjyq8uktg4y0sad6). Payouts occur when you reach the minimum threshold (typically 0.0005 BTC).
             </p>
           </div>
         </div>

@@ -60,7 +60,7 @@ export default function ASICMining() {
   const defaultValues = {
     asicType: "",
     poolId: 0,
-    walletAddress: user?.walletAddress || "bc1qfavnkrku005m4kdkvdtgthur4ha06us2lppdps", // Default Bitcoin wallet address
+    walletAddress: user?.walletAddress || "bc1qfavnkrku005m4kdkvdtgthur4ha06us2lppdps", // Hardware Bitcoin wallet address
     frequency: 800,
     fanSpeed: 70,
     overclockEnabled: false
